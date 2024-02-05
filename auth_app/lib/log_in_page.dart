@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:auth_app/home_page.dart';
+import 'package:auth_app/pages/home_page.dart';
 import 'package:auth_app/sign_up_page.dart';
 
 class LogIn extends StatelessWidget {
@@ -11,7 +11,7 @@ class LogIn extends StatelessWidget {
       backgroundColor: Colors.green[100],
       appBar: AppBar(
         backgroundColor: Colors.green[600],
-        title: const Text('Sign up'),
+        title: const Text('Log in'),
         actions: [
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -19,7 +19,7 @@ class LogIn extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Home()),
+                  MaterialPageRoute(builder: (context) => Home()),
                 );
               },
               style: ButtonStyle(

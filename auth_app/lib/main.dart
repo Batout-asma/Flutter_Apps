@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:auth_app/home_page.dart';
+import 'package:auth_app/pages/wrapper.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -8,11 +8,13 @@ import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() async {
-  runApp(const MyApp());
-
+  // idk why i add this line
+  WidgetsFlutterBinding.ensureInitialized();
+  // end of line
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  runApp(const MyApp());
 
   // ignore: unused_local_variable
   var db = FirebaseFirestore.instance;
@@ -45,7 +47,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: Home(),
+      debugShowCheckedModeBanner: false,
+      home: Wrapper(),
     );
   }
 }

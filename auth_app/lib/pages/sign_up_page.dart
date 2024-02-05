@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:auth_app/pages/home_page.dart';
 import 'package:auth_app/pages/log_in_page.dart';
 
 class SignUp extends StatelessWidget {
@@ -12,34 +11,34 @@ class SignUp extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.green[600],
         title: const Text('Sign up'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Home()),
-                );
-              },
-              style: ButtonStyle(
-                side: const MaterialStatePropertyAll(BorderSide(
-                  color: Colors.white,
-                  width: 1.0,
-                )),
-                shape: MaterialStatePropertyAll(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-              ),
-              child: const Text(
-                'Home',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.all(10.0),
+        //     child: TextButton(
+        //       onPressed: () {
+        //         Navigator.push(
+        //           context,
+        //           MaterialPageRoute(builder: (context) => const Home()),
+        //         );
+        //       },
+        //       style: ButtonStyle(
+        //         side: const MaterialStatePropertyAll(BorderSide(
+        //           color: Colors.white,
+        //           width: 1.0,
+        //         )),
+        //         shape: MaterialStatePropertyAll(
+        //           RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.circular(8.0),
+        //           ),
+        //         ),
+        //       ),
+        //       child: const Text(
+        //         'Home',
+        //         style: TextStyle(color: Colors.white),
+        //       ),
+        //     ),
+        //   ),
+        // ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(130.0),
@@ -86,7 +85,7 @@ class SignUp extends StatelessWidget {
                   child: const Text(
                     'Log in',
                     style: TextStyle(
-                      color: Colors.blue,
+                      color: Colors.green,
                     ),
                   ),
                 )
