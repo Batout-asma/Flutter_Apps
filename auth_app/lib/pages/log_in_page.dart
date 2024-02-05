@@ -11,13 +11,13 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
-  //text editing controllers
+  // text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-//sign user in method
+// sign user in method
   void signUserIn() async {
-    //Loading circle
+    // Loading circle
     showDialog(
       context: context,
       builder: (contest) {
@@ -27,14 +27,46 @@ class _LogInState extends State<LogIn> {
       },
     );
 
-    //Check to log in
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text, password: passwordController.text);
-
-    //End Loading
-    // ignore: use_build_context_synchronously
-    Navigator.pop(context);
+    // Check to log in
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+      // End Loading
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      // End Loading
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
+      // WRONG EMAIL
+      if (e.code == 'user-not-found') {
+        // wrongEmailMassage();
+        // WRONG PASSWORD
+      } else if (e.code == 'wrong-password') {
+        // wrongPasswordMassage();
+      }
+    }
   }
+
+  // void wrongEmailMassage() {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return const AlertDialog(
+  //           title: Text('Incorrect Email'),
+  //         );
+  //       });
+  // }
+
+  // void wrongPasswordMassage() {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return const AlertDialog(
+  //           title: Text('Incorrect Password'),
+  //         );
+  //       });
+  // }
 
   @override
   Widget build(BuildContext context) {
