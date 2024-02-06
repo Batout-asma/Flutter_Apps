@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:auth_app/pages/log_in_page.dart';
+import 'package:auth_app/pages/login_page.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});
@@ -79,7 +79,7 @@ class SignUp extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const LogIn()),
+                      MaterialPageRoute(builder: (context) => LogIn()),
                     );
                   },
                   child: const Text(
