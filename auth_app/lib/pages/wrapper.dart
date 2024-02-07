@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:auth_app/pages/home_page.dart';
-import 'package:auth_app/pages/login_page.dart';
+import 'package:auth_app/pages/Login_or_register_page.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({super.key});
@@ -20,7 +20,7 @@ class Wrapper extends StatelessWidget {
             }
             //user is NOT logged in:
             else {
-              return LogIn();
+              return const LoginOrRegister();
             }
           }),
     );

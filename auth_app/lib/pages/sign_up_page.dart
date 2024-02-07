@@ -1,97 +1,175 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'package:auth_app/pages/login_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class SignUp extends StatelessWidget {
-  const SignUp({super.key});
+import 'package:auth_app/components/my_button.dart';
+import 'package:auth_app/components/my_textfield.dart';
+
+class SignUp extends StatefulWidget {
+  final Function()? onTap;
+  const SignUp({super.key, required this.onTap});
+
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  //  Field controllers
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmpasswordController = TextEditingController();
+
+// sign user up method
+  void signUserUp() async {
+    // Loading circle
+    showDialog(
+      context: context,
+      builder: (contest) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
+    // Create user
+    try {
+      if (passwordController.text == confirmpasswordController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+
+        // get userid & email
+        final user = FirebaseAuth.instance.currentUser!;
+
+        // create collection firestore (users => userid & email)
+        var db = FirebaseFirestore.instance;
+
+        final newUser = <String, String>{
+          "id": user.uid,
+          "email": user.email!,
+        };
+
+        db.collection("users").doc(user.uid).set(newUser);
+      } else {
+        showErrorMessage("Passwords don't match!");
+      }
+      // End Loading
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
+    } on FirebaseAuthException {
+      // End Loading
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
+      // WRONG EMAIL
+      showErrorMessage('Wrong, try again!');
+    }
+  }
+
+  void showErrorMessage(String message) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              message,
+              style: const TextStyle(color: Colors.black),
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.green[100],
       appBar: AppBar(
         backgroundColor: Colors.green[600],
-        title: const Text('Sign up'),
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.all(10.0),
-        //     child: TextButton(
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(builder: (context) => const Home()),
-        //         );
-        //       },
-        //       style: ButtonStyle(
-        //         side: const MaterialStatePropertyAll(BorderSide(
-        //           color: Colors.white,
-        //           width: 1.0,
-        //         )),
-        //         shape: MaterialStatePropertyAll(
-        //           RoundedRectangleBorder(
-        //             borderRadius: BorderRadius.circular(8.0),
-        //           ),
-        //         ),
-        //       ),
-        //       child: const Text(
-        //         'Home',
-        //         style: TextStyle(color: Colors.white),
-        //       ),
-        //     ),
-        //   ),
-        // ],
+        title: const Text('Sign Up'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(130.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const TextField(
-              decoration: InputDecoration(labelText: 'Email'),
-            ),
-            const TextField(
-              decoration: InputDecoration(labelText: 'First Name'),
-            ),
-            const TextField(
-              decoration: InputDecoration(labelText: 'Last Name'),
-            ),
-            const TextField(
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () {},
-                style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.green),
-                  padding: MaterialStatePropertyAll(
-                      EdgeInsets.only(left: 50.0, right: 50.0)),
-                ),
-                child: const Text('Create'),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
               children: [
-                const Text("Already have an account? "),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LogIn()),
-                    );
-                  },
-                  child: const Text(
-                    'Log in',
-                    style: TextStyle(
-                      color: Colors.green,
-                    ),
+                const SizedBox(height: 50),
+
+                // Logo
+                const Icon(
+                  Icons.lock,
+                  size: 60,
+                ),
+                const SizedBox(height: 15),
+
+                // Title
+                const Text(
+                  'Sign up to GreenWatch Pro',
+                  style: TextStyle(
+                    color: Color.fromRGBO(60, 60, 60, 1),
+                    fontSize: 20,
                   ),
+                ),
+
+                const SizedBox(height: 25),
+
+                // Email field
+                MyTextField(
+                  controller: emailController,
+                  hintText: 'Email',
+                  obscureText: false,
+                ),
+
+                const SizedBox(height: 10),
+
+                // Password field
+                MyTextField(
+                  controller: passwordController,
+                  hintText: 'Password',
+                  obscureText: true,
+                ),
+
+                const SizedBox(height: 10),
+
+                // Comfirm password field
+                MyTextField(
+                  controller: confirmpasswordController,
+                  hintText: 'Comfirm Password',
+                  obscureText: true,
+                ),
+
+                const SizedBox(height: 35),
+
+                // Login Btn
+                MyButton(
+                  onTap: signUserUp,
+                  text: 'Sign Up',
+                ),
+
+                const SizedBox(height: 25),
+
+                // Already have an account?
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Already have an account?  ",
+                      style: TextStyle(color: Color.fromRGBO(117, 117, 117, 1)),
+                    ),
+                    GestureDetector(
+                      onTap: widget.onTap,
+                      child: const Text(
+                        'Log In',
+                        style: TextStyle(
+                            color: Color.fromRGBO(46, 125, 50, 1),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  ],
                 )
               ],
-            )
-          ],
+            ),
+          ),
         ),
       ),
     );

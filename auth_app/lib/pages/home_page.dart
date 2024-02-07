@@ -60,7 +60,7 @@ class Home extends StatelessWidget {
         padding: const EdgeInsets.all(30.0),
         child: Center(
           child: Text(
-            "You are logged in our app as\n         ${user.email!}",
+            "You are logged in our app as\n${user.email!}",
             style: const TextStyle(
               fontSize: 25.0,
               fontWeight: FontWeight.bold,
