@@ -1,3 +1,4 @@
+import 'package:auth_app/pages/forgot_pw_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,7 +34,9 @@ class _LogInState extends State<LogIn> {
     // Check to log in
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text);
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
       // End Loading
       // ignore: use_build_context_synchronously
       Navigator.pop(context);
@@ -48,15 +51,16 @@ class _LogInState extends State<LogIn> {
 
   void showErrorMessage(String message) {
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              message,
-              style: const TextStyle(color: Colors.black),
-            ),
-          );
-        });
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            message,
+            style: const TextStyle(color: Colors.black),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -116,9 +120,23 @@ class _LogInState extends State<LogIn> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: Colors.grey[600]),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const ForgotPassword();
+                              },
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          'Forgot Password?',
+                          style: TextStyle(
+                              color: Color.fromRGBO(46, 125, 50, 1),
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ],
                   ),
