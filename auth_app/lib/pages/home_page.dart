@@ -1,3 +1,4 @@
+import 'package:auth_app/components/my_drawer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +15,19 @@ class Home extends StatelessWidget {
     FirebaseAuth.instance.signOut();
   }
 
+  void goToProfilePage() {
+    // pop menu drawer
+    Navigator.pop(context);
+
+    // go to profile page
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => Profile(),
+    //   ),
+    // );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,40 +35,10 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.green[600],
         title: const Text('Home'),
-        actions: [
-          IconButton(
-            onPressed: signUserOut,
-            icon: const Icon(Icons.logout),
-          )
-        ],
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.all(10.0),
-        //     child: TextButton(
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(builder: (context) => const LogIn()),
-        //         );
-        //       },
-        // style: ButtonStyle(
-        //   side: const MaterialStatePropertyAll(BorderSide(
-        //     color: Colors.white,
-        //     width: 1.0,
-        //   )),
-        //   shape: MaterialStatePropertyAll(
-        //     RoundedRectangleBorder(
-        //       borderRadius: BorderRadius.circular(8.0),
-        //     ),
-        //   ),
-        // ),
-        // child: const Text(
-        //   'Log In',
-        //   style: TextStyle(color: Colors.white),
-        // ),
-        //     ),
-        //   ),
-        // ],
+      ),
+      drawer: MyDrawer(
+        onProfileTap: goToProfilePage,
+        onLogOutTap: signUserOut,
       ),
       body: Padding(
         padding: const EdgeInsets.all(30.0),

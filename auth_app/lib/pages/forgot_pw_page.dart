@@ -20,8 +20,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     showDialog(
       context: context,
       builder: (contest) {
-        return const Center(
-          child: CircularProgressIndicator(),
+        return const AlertDialog(
+          content: Text('Password reset link sent succesfully!'),
         );
       },
     );
