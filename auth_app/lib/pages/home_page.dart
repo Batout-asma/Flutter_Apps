@@ -17,7 +17,7 @@ class Home extends StatelessWidget {
 
   void goToProfilePage() {
     // pop menu drawer
-    Navigator.pop(context);
+    // Navigator.pop(context);
 
     // go to profile page
     // Navigator.push(
