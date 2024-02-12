@@ -4,10 +4,14 @@ import 'package:auth_app/components/my_list_tile.dart';
 
 class MyDrawer extends StatelessWidget {
   final void Function()? onProfileTap;
+  final void Function()? onSettingsTap;
   final void Function()? onLogOutTap;
 
   const MyDrawer(
-      {super.key, required this.onProfileTap, required this.onLogOutTap});
+      {super.key,
+      required this.onProfileTap,
+      required this.onLogOutTap,
+      required this.onSettingsTap});
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +45,11 @@ class MyDrawer extends StatelessWidget {
                 icon: Icons.person_outlined,
                 text: 'P R O F I L E',
                 onTap: onProfileTap,
+              ),
+              MyListTile(
+                icon: Icons.settings,
+                text: 'S E T T I N G S',
+                onTap: onSettingsTap,
               ),
             ],
           ),

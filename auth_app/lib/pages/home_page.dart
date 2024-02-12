@@ -1,3 +1,4 @@
+import 'package:auth_app/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,11 +21,25 @@ class _HomeState extends State<Home> {
     FirebaseAuth.instance.signOut();
   }
 
+  void goToSettingsPage() {
+    // pop menu drawer
+    Navigator.pop(context);
+
+    // go to settings page
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const Settings(),
+      ),
+    );
+  }
+
   void goToProfilePage() {
     // pop menu drawer
     Navigator.pop(context);
 
     // go to profile page
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -43,6 +58,7 @@ class _HomeState extends State<Home> {
       ),
       drawer: MyDrawer(
         onProfileTap: goToProfilePage,
+        onSettingsTap: goToSettingsPage,
         onLogOutTap: signUserOut,
       ),
       body: Padding(

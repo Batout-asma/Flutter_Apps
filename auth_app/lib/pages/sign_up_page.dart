@@ -50,12 +50,11 @@ class _SignUpState extends State<SignUp> {
       // Create 'Users' in the database
       FirebaseFirestore.instance
           .collection("Users")
-          .doc(userCredential.user!.email)
+          .doc(userCredential.user?.email)
           .set(
         {
-          'First Name': '',
-          'Last Name': '',
-          'id': '',
+          'First_Name': '',
+          'Last_Name': '',
         },
       );
 
