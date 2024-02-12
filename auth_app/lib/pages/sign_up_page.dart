@@ -31,39 +31,41 @@ class _SignUpState extends State<SignUp> {
         );
       },
     );
+    // check password match
+    if (passwordController.text != confirmpasswordController.text) {
+      // Loading circle
+      Navigator.pop(context);
+      // show the error
+      showErrorMessage("Passwords don't match!");
+      return;
+    }
 
     // Create user
     try {
-      if (passwordController.text == confirmpasswordController.text) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim(),
-        );
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      // Create 'Users' in the database
+      FirebaseFirestore.instance
+          .collection("Users")
+          .doc(userCredential.user!.email)
+          .set(
+        {
+          'First Name': '',
+          'Last Name': '',
+          'id': '',
+        },
+      );
 
-        // get userid & email
-        final user = FirebaseAuth.instance.currentUser!;
-
-        // create collection firestore (users => userid & email)
-        var db = FirebaseFirestore.instance;
-
-        final newUser = <String, String>{
-          "id": user.uid,
-          "email": user.email!,
-        };
-
-        db.collection("users").doc(user.uid).set(newUser);
-      } else {
-        showErrorMessage("Passwords don't match!");
-      }
-      // End Loading
-      // ignore: use_build_context_synchronously
-      Navigator.pop(context);
+      // Loading circle
+      if (context.mounted) Navigator.pop(context);
     } on FirebaseAuthException {
       // End Loading
       // ignore: use_build_context_synchronously
       Navigator.pop(context);
-      // WRONG EMAIL
-      showErrorMessage('Wrong, try again!');
+      showErrorMessage('Try Again!');
     }
   }
 
