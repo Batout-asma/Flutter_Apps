@@ -17,8 +17,7 @@ void main() async {
   );
   runApp(const MyApp());
 
-  // ignore: unused_local_variable
-  var db = FirebaseFirestore.instance;
+  // var db = FirebaseFirestore.instance;
 
   /*
   WRITING IN DATABASE:
