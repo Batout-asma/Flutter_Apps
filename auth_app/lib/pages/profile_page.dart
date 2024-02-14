@@ -105,10 +105,36 @@ class _ProfileState extends State<Profile> {
                     height: 50,
                   ),
                   // profile picture
-                  const Icon(
-                    Icons.person,
-                    size: 72,
+                  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Stack(
+                          children: [
+                            const CircleAvatar(
+                              radius: 64,
+                              backgroundImage: NetworkImage(
+                                  'https://static.vecteezy.com/system/resources/thumbnails/030/504/836/small/avatar-account-flat-isolated-on-transparent-background-for-graphic-and-web-design-default-social-media-profile-photo-symbol-profile-and-people-silhouette-user-icon-vector.jpg'),
+                            ),
+                            Positioned(
+                              bottom: -10,
+                              left: 80,
+                              child: IconButton(
+                                onPressed: () {},
+                                // onPressed: selectImage,
+                                icon: const Icon(Icons.add_a_photo),
+                                color: const Color.fromARGB(189, 0, 0, 0),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
+                  // const Icon(
+                  //   Icons.person,
+                  //   size: 72,
+                  // ),
 
                   const SizedBox(
                     height: 10,
