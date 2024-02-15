@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:auth_app/pages/wrapper.dart';
-import 'package:auth_app/theme/dark_theme.dart';
+// import 'package:auth_app/theme/dark_theme.dart';
 import 'package:auth_app/theme/light_theme.dart';
 
 import 'package:firebase_core/firebase_core.dart';

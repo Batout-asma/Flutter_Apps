@@ -1,9 +1,13 @@
+import 'dart:typed_data';
+
+import 'package:auth_app/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:auth_app/components/text_box.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -18,6 +22,10 @@ class _ProfileState extends State<Profile> {
 
   // collection
   final usersCollection = FirebaseFirestore.instance.collection("Users");
+
+  // profile image var
+  Uint8List? image;
+
   // edit field
   Future<void> editField(String field) async {
     String newValue = "";
@@ -83,6 +91,14 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+  void selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    image = img;
+    setState(
+      () {},
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,17 +127,23 @@ class _ProfileState extends State<Profile> {
                       children: [
                         Stack(
                           children: [
-                            const CircleAvatar(
-                              radius: 64,
-                              backgroundImage: NetworkImage(
-                                  'https://static.vecteezy.com/system/resources/thumbnails/030/504/836/small/avatar-account-flat-isolated-on-transparent-background-for-graphic-and-web-design-default-social-media-profile-photo-symbol-profile-and-people-silhouette-user-icon-vector.jpg'),
-                            ),
+                            image != null
+                                ? CircleAvatar(
+                                    radius: 64,
+                                    backgroundImage: MemoryImage(image!),
+                                  )
+                                : const CircleAvatar(
+                                    radius: 64,
+                                    backgroundImage: NetworkImage(
+                                        'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1024px-Default_pfp.svg.png'),
+                                    // 'https://static.vecteezy.com/system/resources/thumbnails/030/504/836/small/avatar-account-flat-isolated-on-transparent-background-for-graphic-and-web-design-default-social-media-profile-photo-symbol-profile-and-people-silhouette-user-icon-vector.jpg'),
+                                  ),
                             Positioned(
                               bottom: -10,
                               left: 80,
                               child: IconButton(
-                                onPressed: () {},
-                                // onPressed: selectImage,
+                                // onPressed: () {},
+                                onPressed: selectImage,
                                 icon: const Icon(Icons.add_a_photo),
                                 color: const Color.fromARGB(189, 0, 0, 0),
                               ),
