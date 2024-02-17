@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:auth_app/components/my_button.dart';
 import 'package:auth_app/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -93,11 +94,15 @@ class _ProfileState extends State<Profile> {
 
   void selectImage() async {
     Uint8List img = await pickImage(ImageSource.gallery);
-    image = img;
+
     setState(
-      () {},
+      () {
+        image = img;
+      },
     );
   }
+
+  void saveProfile() {}
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +126,7 @@ class _ProfileState extends State<Profile> {
                     height: 50,
                   ),
                   // profile picture
+<<<<<<< HEAD
                   Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -140,7 +146,8 @@ class _ProfileState extends State<Profile> {
                                   ),
                             Positioned(
                               bottom: -10,
-                              left: 80,
+                              right: 10,
+                              // right: 20,
                               child: IconButton(
                                 // onPressed: () {},
                                 onPressed: selectImage,
@@ -152,11 +159,12 @@ class _ProfileState extends State<Profile> {
                         ),
                       ],
                     ),
+=======
+                  const Icon(
+                    Icons.person,
+                    size: 72,
+>>>>>>> parent of 4365943 (add default pfp and the edit icon btn)
                   ),
-                  // const Icon(
-                  //   Icons.person,
-                  //   size: 72,
-                  // ),
 
                   const SizedBox(
                     height: 10,
@@ -170,7 +178,7 @@ class _ProfileState extends State<Profile> {
                   ),
 
                   const SizedBox(
-                    height: 50,
+                    height: 30,
                   ),
 
                   // user infos
@@ -200,6 +208,10 @@ class _ProfileState extends State<Profile> {
                     sName: 'Last_Name',
                     onPressed: () => editField('Last_Name'),
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  MyButton(onTap: saveProfile, text: 'Save Profile'),
                 ],
               );
             } else if (snapshot.hasError) {
