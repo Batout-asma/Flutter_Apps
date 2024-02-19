@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:auth_app/components/text_box.dart';
+import 'package:auth_app/components/my_button.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -122,7 +123,7 @@ class _ProfileState extends State<Profile> {
                   ),
 
                   const SizedBox(
-                    height: 50,
+                    height: 30,
                   ),
 
                   // user infos
@@ -152,6 +153,10 @@ class _ProfileState extends State<Profile> {
                     sName: 'Last_Name',
                     onPressed: () => editField('Last_Name'),
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  MyButton(onTap: () {}, text: 'Save Profile'),
                 ],
               );
             } else if (snapshot.hasError) {
