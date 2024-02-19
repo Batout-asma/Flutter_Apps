@@ -40,9 +40,12 @@ dependencies:
   firebase_auth: ^4.17.3
 <<<<<<< HEAD
   image_picker: ^1.0.7
+<<<<<<< HEAD
   firebase_storage: ^11.6.5
 =======
 >>>>>>> parent of 4365943 (add default pfp and the edit icon btn)
+=======
+>>>>>>> parent of 02579cf (firebase storage installed)
 
 dev_dependencies:
   flutter_test:
