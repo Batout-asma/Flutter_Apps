@@ -1,12 +1,10 @@
-import 'dart:typed_data';
-
-import 'package:auth_app/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:auth_app/components/text_box.dart';
+import 'package:auth_app/components/my_button.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -86,14 +84,6 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  void selectImage() async {
-    Uint8List img = await pickImage(ImageSource.gallery);
-    image = img;
-    setState(
-      () {},
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,38 +106,9 @@ class _ProfileState extends State<Profile> {
                     height: 50,
                   ),
                   // profile picture
-<<<<<<< HEAD
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Stack(
-                          children: [
-                            const CircleAvatar(
-                              radius: 64,
-                              backgroundImage: NetworkImage(
-                                  'https://static.vecteezy.com/system/resources/thumbnails/030/504/836/small/avatar-account-flat-isolated-on-transparent-background-for-graphic-and-web-design-default-social-media-profile-photo-symbol-profile-and-people-silhouette-user-icon-vector.jpg'),
-                            ),
-                            Positioned(
-                              bottom: -10,
-                              right: 10,
-                              // right: 20,
-                              child: IconButton(
-                                onPressed: () {},
-                                // onPressed: selectImage,
-                                icon: const Icon(Icons.add_a_photo),
-                                color: const Color.fromARGB(189, 0, 0, 0),
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-=======
                   const Icon(
                     Icons.person,
                     size: 72,
->>>>>>> parent of 4365943 (add default pfp and the edit icon btn)
                   ),
 
                   const SizedBox(
@@ -195,7 +156,7 @@ class _ProfileState extends State<Profile> {
                   const SizedBox(
                     height: 20,
                   ),
-                  MyButton(onTap: saveProfile, text: 'Save Profile'),
+                  MyButton(onTap: () {}, text: 'Save Profile'),
                 ],
               );
             } else if (snapshot.hasError) {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:auth_app/pages/wrapper.dart';
-import 'package:auth_app/theme/dark_theme.dart';
+// import 'package:auth_app/theme/dark_theme.dart';
 import 'package:auth_app/theme/light_theme.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() async {
   // idk why i add this line
