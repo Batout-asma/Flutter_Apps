@@ -59,6 +59,7 @@ class _SignUpState extends State<SignUp> {
       );
 
       // Loading circle
+      // ignore: use_build_context_synchronously
       if (context.mounted) Navigator.pop(context);
     } on FirebaseAuthException {
       // End Loading
@@ -132,10 +133,10 @@ class _SignUpState extends State<SignUp> {
 
                 const SizedBox(height: 10),
 
-                // Comfirm password field
+                // Confirm password field
                 MyTextField(
                   controller: confirmpasswordController,
-                  hintText: 'Comfirm Password',
+                  hintText: 'Confirm Password',
                   obscureText: true,
                 ),
 
