@@ -1,3 +1,4 @@
+import 'package:auth_app/components/my_dropdown.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -55,6 +56,7 @@ class _SignUpState extends State<SignUp> {
         {
           'First_Name': '',
           'Last_Name': '',
+          'Occupation': '',
         },
       );
 
@@ -139,6 +141,9 @@ class _SignUpState extends State<SignUp> {
                   hintText: 'Confirm Password',
                   obscureText: true,
                 ),
+
+                const SizedBox(height: 10),
+                const MyDropDown(),
 
                 const SizedBox(height: 35),
 
