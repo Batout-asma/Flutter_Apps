@@ -20,9 +20,12 @@ class _SignUpState extends State<SignUp> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmpasswordController = TextEditingController();
+  var occup = '';
 
 // sign user up method
   void signUserUp() async {
+    var occupation = occup;
+
     // Loading circle
     showDialog(
       context: context,
@@ -32,6 +35,7 @@ class _SignUpState extends State<SignUp> {
         );
       },
     );
+
     // check password match
     if (passwordController.text != confirmpasswordController.text) {
       // Loading circle
@@ -56,7 +60,7 @@ class _SignUpState extends State<SignUp> {
         {
           'First_Name': '',
           'Last_Name': '',
-          'Occupation': '',
+          'Occupation': occupation,
         },
       );
 
@@ -82,6 +86,10 @@ class _SignUpState extends State<SignUp> {
             ),
           );
         });
+  }
+
+  void handleItemSelected(String selectedItem) {
+    occup = selectedItem;
   }
 
   @override
@@ -143,7 +151,10 @@ class _SignUpState extends State<SignUp> {
                 ),
 
                 const SizedBox(height: 10),
-                const MyDropDown(),
+
+                MyDropDown(
+                  onItemSelected: handleItemSelected,
+                ),
 
                 const SizedBox(height: 35),
 

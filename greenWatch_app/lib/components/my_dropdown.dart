@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 const List<String> list = <String>['Client', 'Seller'];
 
 class MyDropDown extends StatefulWidget {
-  const MyDropDown({Key? key}) : super(key: key);
+  final Function(String) onItemSelected;
+  const MyDropDown({super.key, required this.onItemSelected});
 
   @override
   State<MyDropDown> createState() => _MyDropDownState();
@@ -11,6 +12,7 @@ class MyDropDown extends StatefulWidget {
 
 class _MyDropDownState extends State<MyDropDown> {
   String dropdownValue = list.first;
+  String selectedItem = '';
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class _MyDropDownState extends State<MyDropDown> {
         onSelected: (String? value) {
           setState(() {
             dropdownValue = value!;
+            widget.onItemSelected(value);
           });
         },
         expandedInsets: const EdgeInsets.all(0),
