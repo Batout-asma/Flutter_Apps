@@ -6,12 +6,13 @@ class MyDrawer extends StatelessWidget {
   final void Function()? onProfileTap;
   final void Function()? onSettingsTap;
   final void Function()? onLogOutTap;
-
+  final String text;
   const MyDrawer(
       {super.key,
       required this.onProfileTap,
       required this.onLogOutTap,
-      required this.onSettingsTap});
+      required this.onSettingsTap,
+      required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class MyDrawer extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 20.0),
                 child: MyListTile(
                   icon: Icons.home,
-                  text: 'H O M E',
+                  text: text,
                   onTap: () => Navigator.pop(context),
                 ),
               ),

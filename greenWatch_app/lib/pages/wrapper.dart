@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:auth_app/pages/home_page.dart';
+import 'package:auth_app/pages/layout_page.dart';
 import 'package:auth_app/pages/Login_or_register_page.dart';
 
 class Wrapper extends StatelessWidget {
@@ -16,7 +16,7 @@ class Wrapper extends StatelessWidget {
           builder: (context, snapshot) {
             //user is logged in:
             if (snapshot.hasData) {
-              return const Home();
+              return const Layout();
             }
             //user is NOT logged in:
             else {

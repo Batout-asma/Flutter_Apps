@@ -1,7 +1,6 @@
 import 'package:auth_app/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
-import 'package:auth_app/components/my_drawer.dart';
 import 'package:auth_app/pages/profile_page.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -52,15 +51,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        backgroundColor: Colors.green[600],
-        title: const Text('Home'),
-      ),
-      drawer: MyDrawer(
-        onProfileTap: goToProfilePage,
-        onSettingsTap: goToSettingsPage,
-        onLogOutTap: signUserOut,
-      ),
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Center(
