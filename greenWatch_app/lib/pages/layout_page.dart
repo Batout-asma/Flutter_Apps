@@ -31,7 +31,6 @@ class _LayoutState extends State<Layout> {
     'C H A T B O X',
     'S H O P',
   ];
-
   // sign user out method
   void signUserOut() {
     FirebaseAuth.instance.signOut();
@@ -101,7 +100,7 @@ class _LayoutState extends State<Layout> {
             label: 'ChatBox',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopify_rounded),
+            icon: Icon(Icons.shopping_bag_rounded),
             label: 'Shop',
           ),
         ],
