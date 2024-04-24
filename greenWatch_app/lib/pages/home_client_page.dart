@@ -5,14 +5,14 @@ import 'package:auth_app/pages/profile_page.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class HomeClient extends StatefulWidget {
+  const HomeClient({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomeClient> createState() => _HomeClientState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeClientState extends State<HomeClient> {
   final user = FirebaseAuth.instance.currentUser!;
 
   // sign user out method
@@ -55,7 +55,7 @@ class _HomeState extends State<Home> {
         padding: const EdgeInsets.all(30.0),
         child: Center(
           child: Text(
-            "You are logged in our app as\n${user.email!}",
+            "Welcome our Client\n${user.email!}",
             style: const TextStyle(
               fontSize: 25.0,
               fontWeight: FontWeight.bold,

@@ -1,9 +1,11 @@
 import 'package:auth_app/components/my_drawer.dart';
 import 'package:auth_app/pages/chatbox_page.dart';
-import 'package:auth_app/pages/home_page.dart';
+import 'package:auth_app/pages/home_client_page.dart';
+import 'package:auth_app/pages/home_seller_page.dart';
 import 'package:auth_app/pages/profile_page.dart';
-import 'package:auth_app/pages/settings_page.dart';
+import 'package:auth_app/pages/settings_page.dart' as my_app_settings;
 import 'package:auth_app/pages/shop_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -15,12 +17,12 @@ class Layout extends StatefulWidget {
 }
 
 class _LayoutState extends State<Layout> {
+  late User? currentUser;
+  late String? occupation;
   int currentIndex = 0;
-  final screens = [
-    const Home(),
-    const ChatBox(),
-    const Shop(),
-  ];
+  int usertype = 0;
+  late List<Widget> screens;
+
   final titles = [
     'Home',
     'ChatBox',
@@ -31,6 +33,48 @@ class _LayoutState extends State<Layout> {
     'C H A T B O X',
     'S H O P',
   ];
+  @override
+  void initState() {
+    super.initState();
+    currentUser = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(currentUser?.email)
+        .get()
+        .then((docSnapshot) {
+      if (docSnapshot.exists) {
+        occupation = docSnapshot.data()?['Occupation'];
+        setState(() {
+          if (occupation == 'Seller') {
+            usertype = 1;
+            screens = [
+              const HomeSeller(),
+              const ChatBox(),
+              const ShopScreen(),
+            ];
+          } else {
+            screens = [
+              const HomeClient(),
+              const ChatBox(),
+              const ShopScreen(),
+            ];
+          }
+        });
+      } else {
+        // Document does not exist
+      }
+    }).catchError((error) {
+      // Handle any errors
+      print("Error getting document: $error");
+    });
+
+    screens = [
+      const Center(child: CircularProgressIndicator()),
+      const ChatBox(),
+      const ShopScreen(),
+    ];
+  }
+
   // sign user out method
   void signUserOut() {
     FirebaseAuth.instance.signOut();
@@ -44,7 +88,7 @@ class _LayoutState extends State<Layout> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const Settings(),
+        builder: (context) => const my_app_settings.Settings(),
       ),
     );
   }
