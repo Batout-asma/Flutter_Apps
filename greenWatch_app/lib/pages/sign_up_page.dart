@@ -98,7 +98,10 @@ class _SignUpState extends State<SignUp> {
       backgroundColor: Colors.green[100],
       appBar: AppBar(
         backgroundColor: Colors.green[600],
-        title: const Text('Sign Up'),
+        title: const Text(
+          'Sign Up',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: SafeArea(
         child: Center(
@@ -161,9 +164,8 @@ class _SignUpState extends State<SignUp> {
                 // Login Btn
                 MyButton(
                   onTap: signUserUp,
-                  text: 'Sign Up',
+                  text: 'S I G N  U P',
                 ),
-
                 const SizedBox(height: 25),
 
                 // Already have an account?

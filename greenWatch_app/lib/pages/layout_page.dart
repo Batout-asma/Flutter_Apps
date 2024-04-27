@@ -1,10 +1,8 @@
-import 'package:auth_app/components/my_drawer.dart';
 import 'package:auth_app/pages/chatbox_page.dart';
 import 'package:auth_app/pages/home_client_page.dart';
 import 'package:auth_app/pages/home_seller_page.dart';
-import 'package:auth_app/pages/profile_page.dart';
-import 'package:auth_app/pages/settings_page.dart' as my_app_settings;
-import 'package:auth_app/pages/shop_page.dart';
+import 'package:auth_app/pages/shop_client_page.dart';
+import 'package:auth_app/pages/shop_seller_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,16 +21,6 @@ class _LayoutState extends State<Layout> {
   int usertype = 0;
   late List<Widget> screens;
 
-  final titles = [
-    'Home',
-    'ChatBox',
-    'Shop',
-  ];
-  final texts = [
-    'H O M E',
-    'C H A T B O X',
-    'S H O P',
-  ];
   @override
   void initState() {
     super.initState();
@@ -50,13 +38,13 @@ class _LayoutState extends State<Layout> {
             screens = [
               const HomeSeller(),
               const ChatBox(),
-              const ShopScreen(),
+              const ShopSeller(),
             ];
           } else {
             screens = [
               const HomeClient(),
               const ChatBox(),
-              const ShopScreen(),
+              const ShopClient(),
             ];
           }
         });
@@ -64,63 +52,20 @@ class _LayoutState extends State<Layout> {
         // Document does not exist
       }
     }).catchError((error) {
-      // Handle any errors
       print("Error getting document: $error");
     });
 
     screens = [
       const Center(child: CircularProgressIndicator()),
       const ChatBox(),
-      const ShopScreen(),
+      const ShopClient(),
     ];
-  }
-
-  // sign user out method
-  void signUserOut() {
-    FirebaseAuth.instance.signOut();
-  }
-
-  void goToSettingsPage() {
-    // pop menu drawer
-    Navigator.pop(context);
-
-    // go to settings page
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const my_app_settings.Settings(),
-      ),
-    );
-  }
-
-  void goToProfilePage() {
-    // pop menu drawer
-    Navigator.pop(context);
-
-    // go to profile page
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const Profile(),
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        backgroundColor: Colors.green[600],
-        title: Text(titles[currentIndex]),
-      ),
-      drawer: MyDrawer(
-        onProfileTap: goToProfilePage,
-        onSettingsTap: goToSettingsPage,
-        onLogOutTap: signUserOut,
-        text: (texts[currentIndex]),
-      ),
       body: IndexedStack(
         index: currentIndex,
         children: screens,

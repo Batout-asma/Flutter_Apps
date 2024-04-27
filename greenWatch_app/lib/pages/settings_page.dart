@@ -8,8 +8,12 @@ class Settings extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.green[100],
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.green[600],
-        title: const Text('Settings'),
+        title: const Text(
+          'Settings',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:auth_app/components/my_drawer.dart';
 import 'package:auth_app/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
@@ -51,6 +52,19 @@ class _HomeClientState extends State<HomeClient> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: Colors.green[600],
+        title: const Text(
+          "Home",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      drawer: MyDrawer(
+        onProfileTap: goToProfilePage,
+        onSettingsTap: goToSettingsPage,
+        onLogOutTap: signUserOut,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Center(
