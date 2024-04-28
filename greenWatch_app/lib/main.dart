@@ -23,30 +23,6 @@ void main() async {
       child: const MyApp(),
     ),
   );
-
-  // var db = FirebaseFirestore.instance;
-
-  /*
-  WRITING IN DATABASE:
-
-  final user = <String, dynamic>{
-    "name": "Asma",
-    "age": 20,
-  };
-
-  db.collection("users").add(user).then((DocumentReference doc) =>
-      print('DocumentSnapshot added with ID: ${doc.id}'));
-  */
-
-  /*
-  READING FROM DATABASE:
-
-  await db.collection("users").get().then((event) {
-    for (var doc in event.docs) {
-      print("${doc.id} => ${doc.data()}");
-    }
-  });
-  */
 }
 
 class MyApp extends StatelessWidget {

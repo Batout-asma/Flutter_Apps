@@ -69,7 +69,10 @@ class _LogInState extends State<LogIn> {
       backgroundColor: Colors.green[100],
       appBar: AppBar(
         backgroundColor: Colors.green[600],
-        title: const Text('Log in'),
+        title: const Text(
+          'Log in',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: SafeArea(
         child: Center(
@@ -147,7 +150,7 @@ class _LogInState extends State<LogIn> {
                 // Login Btn
                 MyButton(
                   onTap: signUserIn,
-                  text: 'Log In',
+                  text: 'L O G  I N',
                 ),
 
                 const SizedBox(height: 25),
