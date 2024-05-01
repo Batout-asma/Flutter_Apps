@@ -94,6 +94,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           MyButton(
             onTap: passwordReset,
             text: 'Reset Password',
+            enabled: true,
           ),
           // MaterialButton(
           //   onPressed: () {},

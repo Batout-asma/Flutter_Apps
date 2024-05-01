@@ -28,6 +28,22 @@ class Product {
     required this.description,
   });
 
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'price': price,
+      'description': description,
+    };
+  }
+
+  factory Product.fromMap(Map<String, dynamic> data) {
+    return Product(
+      name: data['name'] as String,
+      price: data['price'] as double,
+      description: data['description'] as String,
+    );
+  }
+
   factory Product.fromFirestore(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
 

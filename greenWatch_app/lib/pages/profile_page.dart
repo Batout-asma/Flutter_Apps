@@ -160,7 +160,11 @@ class _ProfileState extends State<Profile> {
                   const SizedBox(
                     height: 20,
                   ),
-                  MyButton(onTap: () {}, text: 'Save Profile'),
+                  MyButton(
+                    onTap: () {},
+                    text: 'Save Profile',
+                    enabled: true,
+                  ),
                 ],
               );
             } else if (snapshot.hasError) {

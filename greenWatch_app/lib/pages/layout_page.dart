@@ -52,6 +52,7 @@ class _LayoutState extends State<Layout> {
         // Document does not exist
       }
     }).catchError((error) {
+      // ignore: avoid_print
       print("Error getting document: $error");
     });
 

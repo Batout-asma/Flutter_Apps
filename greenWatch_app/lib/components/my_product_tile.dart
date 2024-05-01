@@ -1,4 +1,6 @@
 import 'package:auth_app/models/product.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MyProductTile extends StatelessWidget {
@@ -9,6 +11,27 @@ class MyProductTile extends StatelessWidget {
     required this.product,
   });
 
+  void addToCart(BuildContext context) async {
+    final currentUser = FirebaseAuth.instance.currentUser!;
+    final userDocRef =
+        FirebaseFirestore.instance.collection('Users').doc(currentUser.email);
+    final cartRef = userDocRef.collection('Cart');
+
+    // Check for existing cart collection (optional)
+    final cartDocSnap = await userDocRef.get();
+    if (!cartDocSnap.exists) {
+      await userDocRef
+          .set({'cart': []}); // Create cart collection if it doesn't exist
+    }
+
+    await cartRef.add(product.toMap());
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('"${product.name}" added to cart!'),
+      ),
+    );
+  }
+  /*
   void addToCart(BuildContext context) {
     showDialog(
       context: context,
@@ -24,21 +47,33 @@ class MyProductTile extends StatelessWidget {
           ),
           // Add button
           TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // Add product to cart (access Cart instance here)
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('"${product.name}" added to cart!'),
-                ),
-              );
+            onPressed: () async {
+              final auth = Provider.of<FirebaseAuth>(context, listen: false);
+              final currentUser = auth.currentUser;
+
+              if (currentUser != null) {
+                final userDocRef = FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(currentUser.email);
+                final cartRef = userDocRef.collection('cart');
+
+                await cartRef.add(product.toMap());
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('"${product.name}" added to cart!'),
+                  ),
+                );
+              } else {
+                // Handle case when user is not signed in (optional)
+                print('Cannot add to cart');
+              }
             },
             child: const Text('Add'),
           ),
         ],
       ),
     );
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {

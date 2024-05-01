@@ -165,6 +165,7 @@ class _SignUpState extends State<SignUp> {
                 MyButton(
                   onTap: signUserUp,
                   text: 'S I G N  U P',
+                  enabled: true,
                 ),
                 const SizedBox(height: 25),
 

@@ -98,6 +98,7 @@ class _AddFormState extends State<AddForm> {
               MyButton(
                 onTap: addProduct,
                 text: 'A D D',
+                enabled: true,
               ),
             ],
           ),

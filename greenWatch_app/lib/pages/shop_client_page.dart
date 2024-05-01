@@ -3,7 +3,7 @@ import 'package:auth_app/components/my_product_tile.dart';
 import 'package:auth_app/models/product.dart';
 import 'package:auth_app/pages/cart_page.dart';
 import 'package:auth_app/pages/profile_page.dart';
-import 'package:auth_app/pages/settings_page.dart' as mySettings;
+import 'package:auth_app/pages/settings_page.dart' as my_settings;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -40,8 +40,26 @@ class _ShopClientState extends State<ShopClient> {
         shopList = List.from(data.docs.map((doc) => Product.fromSnapshot(doc)));
       });
     } catch (error) {
+      // ignore: avoid_print
       print("Error fetching products: $error"); // Log the error
     }
+  }
+
+  void addToCart(Product product) async {
+    final userDocRef =
+        FirebaseFirestore.instance.collection('users').doc(currentUser!.email);
+    final cartRef = userDocRef.collection('cart');
+
+    final cartDocSnap = await userDocRef.get();
+    if (!cartDocSnap.exists) {
+      await userDocRef.set({'Cart': []});
+    }
+    await cartRef.add(product.toMap());
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('"${product.name}" added to cart!'),
+      ),
+    );
   }
 
   // Sign out user method
@@ -57,7 +75,7 @@ class _ShopClientState extends State<ShopClient> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const mySettings.Settings(),
+        builder: (context) => const my_settings.Settings(),
       ),
     );
   }
@@ -169,7 +187,7 @@ class _ShopClientState extends State<ShopClient> {
                         },
                       ),
                     )
-                  : const Center(child: Text('No product disponible')),
+                  : const Center(child: Text('No product Available')),
             ],
           );
         },

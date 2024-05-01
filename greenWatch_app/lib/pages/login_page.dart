@@ -151,6 +151,7 @@ class _LogInState extends State<LogIn> {
                 MyButton(
                   onTap: signUserIn,
                   text: 'L O G  I N',
+                  enabled: true,
                 ),
 
                 const SizedBox(height: 25),
