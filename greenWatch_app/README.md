@@ -1,4 +1,4 @@
-# auth_app
+# GreenWatch_app
 
 A new Flutter project.
 
