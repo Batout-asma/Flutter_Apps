@@ -3,6 +3,7 @@ import 'package:auth_app/components/my_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class AddForm extends StatefulWidget {
   const AddForm({super.key});
@@ -21,18 +22,20 @@ class _AddFormState extends State<AddForm> {
   final priceController = TextEditingController();
 
   // add product
-  void addProduct() {
+  void addProduct() async {
+    final String productId = const Uuid().v4();
     // Create 'Products' in the database
-    FirebaseFirestore.instance
-        .collection("Products")
-        .doc(currentUser?.email)
-        .set(
+    await FirebaseFirestore.instance.collection("Products").doc(productId).set(
       {
         'Name': nameController.text,
         'Description': descriptionController.text,
         'Price': priceController.text,
+        'userEmail': currentUser?.email,
       },
     );
+    nameController.text = '';
+    descriptionController.text = '';
+    priceController.text = '';
   }
 
   @override

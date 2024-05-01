@@ -1,12 +1,9 @@
 import 'package:auth_app/components/my_drawer.dart';
-import 'package:auth_app/components/my_product_tile.dart';
 import 'package:auth_app/pages/add_product.dart';
 import 'package:auth_app/pages/profile_page.dart';
 import 'package:auth_app/pages/settings_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:auth_app/models/shop.dart';
 
 class ShopSeller extends StatefulWidget {
   const ShopSeller({super.key});
@@ -60,7 +57,7 @@ class _ShopSellerState extends State<ShopSeller> {
 
   @override
   Widget build(BuildContext context) {
-    final products = context.watch<Shop>().shop;
+    // final products = context.watch<Shop>().shop;
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
@@ -100,12 +97,14 @@ class _ShopSellerState extends State<ShopSeller> {
             SizedBox(
               height: 550,
               child: ListView.builder(
-                itemCount: products.length,
+                // itemCount: products.length,
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.all(15),
                 itemBuilder: (context, index) {
-                  final product = products[index];
-                  return MyProductTile(product: product);
+                  return null;
+
+                  //  final product = products[index];
+                  // return MyProductTile(product: product);
                 },
               ),
             ),

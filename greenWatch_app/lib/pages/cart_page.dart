@@ -1,13 +1,18 @@
 import 'package:auth_app/components/my_button.dart';
 import 'package:auth_app/models/product.dart';
-import 'package:auth_app/models/shop.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class Cart extends StatelessWidget {
+class Cart extends StatefulWidget {
   const Cart({super.key});
 
-  void removeItemFromCart(BuildContext context, Product product) {
+  @override
+  State<Cart> createState() => _CartState();
+}
+
+class _CartState extends State<Cart> {
+  final List<Product> cart = [];
+
+  void removeItemFromCart(Product product) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -22,8 +27,8 @@ class Cart extends StatelessWidget {
           MaterialButton(
             onPressed: () {
               Navigator.pop(context);
-
-              context.read<Shop>().removeFromCart(product);
+              cart.remove(product);
+              setState(() {}); // Update UI after removing item
             },
             child: const Text("Remove"),
           ),
@@ -32,18 +37,24 @@ class Cart extends StatelessWidget {
     );
   }
 
-  void payBtnPressed(BuildContext context) {
+  void payBtnPressed(BuildContext context) async {
+    // Implement actual payment logic here based on your cart data
     showDialog(
       context: context,
       builder: (context) => const AlertDialog(
-        content: Text("User payed successfully"),
+        content: Text("Payment processing..."),
       ),
     );
+
+    if (true) {
+      // Show payment success dialog (optional)
+      cart.clear(); // Clear cart after successful payment
+      setState(() {}); // Update UI after clearing cart
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final cart = context.watch<Shop>().cart;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -56,32 +67,35 @@ class Cart extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // cart list
+          // Cart list
           Expanded(
             child: cart.isEmpty
                 ? const Center(child: Text("Your cart is empty..."))
                 : ListView.builder(
                     itemCount: cart.length,
                     itemBuilder: (context, index) {
-                      // get an item in cart
+                      // Get an item in cart
                       final item = cart[index];
-                      // return as cart tile
+
+                      // Return as cart tile with product information
                       return ListTile(
-                        title: Text(item.name),
+                        title: Text(item.name), // Use null-aware operator
                         subtitle: Text(item.price.toStringAsFixed(2)),
                         trailing: IconButton(
                           icon: const Icon(Icons.remove),
-                          onPressed: () => removeItemFromCart(context, item),
+                          onPressed: () => removeItemFromCart(item),
                         ),
                       );
                     },
                   ),
           ),
-          // pay btn
+          // Pay button
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 50, 0, 50),
             child: MyButton(
-                onTap: () => payBtnPressed(context), text: "P A Y  N O W"),
+              onTap: () => payBtnPressed(context),
+              text: "P A Y  N O W",
+            ),
           ),
         ],
       ),

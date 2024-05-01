@@ -1,7 +1,5 @@
 import 'package:auth_app/models/product.dart';
-import 'package:auth_app/models/shop.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class MyProductTile extends StatelessWidget {
   final Product product;
@@ -15,20 +13,27 @@ class MyProductTile extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        content: const Text("Add this item to your cart?"),
+        title: const Text('Add to Cart'),
+        content: Text(
+            'Are you sure you want to add "${product.name}" to your cart?'),
         actions: [
-          // cancel
-          MaterialButton(
+          // Cancel button
+          TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
+            child: const Text('Cancel'),
           ),
-          // accept
-          MaterialButton(
+          // Add button
+          TextButton(
             onPressed: () {
               Navigator.pop(context);
-              context.read<Shop>().addToCart(product);
+              // Add product to cart (access Cart instance here)
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('"${product.name}" added to cart!'),
+                ),
+              );
             },
-            child: const Text("Add"),
+            child: const Text('Add'),
           ),
         ],
       ),
@@ -52,21 +57,22 @@ class MyProductTile extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // product image
               AspectRatio(
                 aspectRatio: 1,
                 child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.green[100],
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(25),
-                    child: const Icon(Icons.favorite_border_outlined)),
+                  decoration: BoxDecoration(
+                    color: Colors.green[100],
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(25),
+                  child: const Icon(Icons.favorite_border_outlined),
+                ),
               ),
 
               const SizedBox(height: 25),
-              // product name
+
+              // Product name
               Text(
                 product.name,
                 style: const TextStyle(
@@ -75,9 +81,9 @@ class MyProductTile extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
 
-              // product description
+              // Product description
               Text(
                 product.description,
                 style: TextStyle(
@@ -86,21 +92,23 @@ class MyProductTile extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // product price
+              // Product price
               Text('${product.price.toStringAsFixed(2)} DZD'),
 
-              // add to cart btn
+              // Add to cart btn
               Container(
-                  decoration: BoxDecoration(
-                      color: Colors.green[500],
-                      borderRadius: BorderRadius.circular(15)),
-                  child: IconButton(
-                      onPressed: () => addToCart(context),
-                      icon: const Icon(Icons.add)))
+                decoration: BoxDecoration(
+                  color: Colors.green[500],
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: IconButton(
+                  onPressed: () => addToCart(context),
+                  icon: const Icon(Icons.add),
+                ),
+              ),
             ],
           ),
         ],

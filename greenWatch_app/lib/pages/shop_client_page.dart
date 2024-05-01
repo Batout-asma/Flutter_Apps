@@ -1,12 +1,12 @@
 import 'package:auth_app/components/my_drawer.dart';
 import 'package:auth_app/components/my_product_tile.dart';
+import 'package:auth_app/models/product.dart';
 import 'package:auth_app/pages/cart_page.dart';
 import 'package:auth_app/pages/profile_page.dart';
-import 'package:auth_app/pages/settings_page.dart';
+import 'package:auth_app/pages/settings_page.dart' as mySettings;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:auth_app/models/shop.dart';
 
 class ShopClient extends StatefulWidget {
   const ShopClient({super.key});
@@ -16,30 +16,57 @@ class ShopClient extends StatefulWidget {
 }
 
 class _ShopClientState extends State<ShopClient> {
-// sign user out method
+  final currentUser = FirebaseAuth.instance.currentUser;
+  Future<List<Product>>? productsFuture;
+  @override
+  void initState() {
+    super.initState();
+    productsFuture = _fetchProducts();
+  }
+
+  Future<List<Product>> _fetchProducts() async {
+    final snapshot =
+        await FirebaseFirestore.instance.collection('Products').get();
+    return snapshot.docs.map((doc) => Product.fromFirestore(doc)).toList();
+  }
+
+  List<Product> shopList = [];
+  String searchText = '';
+
+  Future<void> getProductList() async {
+    try {
+      var data = await FirebaseFirestore.instance.collection('Products').get();
+      setState(() {
+        shopList = List.from(data.docs.map((doc) => Product.fromSnapshot(doc)));
+      });
+    } catch (error) {
+      print("Error fetching products: $error"); // Log the error
+    }
+  }
+
+  // Sign out user method
   void signUserOut() {
     FirebaseAuth.instance.signOut();
   }
 
   void goToSettingsPage() {
-    // pop menu drawer
+    // Pop menu drawer
     Navigator.pop(context);
 
-    // go to settings page
+    // Go to settings page
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const Settings(),
+        builder: (context) => const mySettings.Settings(),
       ),
     );
   }
 
   void goToProfilePage() {
-    // pop menu drawer
+    // Pop menu drawer
     Navigator.pop(context);
 
-    // go to profile page
-
+    // Go to profile page
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -49,7 +76,7 @@ class _ShopClientState extends State<ShopClient> {
   }
 
   void goToCartPage() {
-    // go to cart page
+    // Go to cart page
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -60,56 +87,93 @@ class _ShopClientState extends State<ShopClient> {
 
   @override
   Widget build(BuildContext context) {
-    final products = context.watch<Shop>().shop;
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.white),
-          backgroundColor: Colors.green[600],
-          title: const Text(
-            "Shop",
-            style: TextStyle(color: Colors.white),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: IconButton(
-                onPressed: () => goToCartPage(),
-                icon: const Icon(Icons.shopping_cart_rounded),
-              ),
-            )
-          ],
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: Colors.green[600],
+        title: const Text(
+          "Shop",
+          style: TextStyle(color: Colors.white),
         ),
-        drawer: MyDrawer(
-          onProfileTap: goToProfilePage,
-          onSettingsTap: goToSettingsPage,
-          onLogOutTap: signUserOut,
-        ),
-        body: ListView(
-          children: [
-            const SizedBox(height: 25),
-            // shop subtitle
-            Center(
-              child: Text(
-                "Visit your cart to valid payment",
-                style: TextStyle(color: Colors.green[900], fontSize: 16),
-              ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: IconButton(
+              onPressed: goToCartPage,
+              icon: const Icon(Icons.shopping_cart_rounded),
             ),
+          )
+        ],
+      ),
+      drawer: MyDrawer(
+        onProfileTap: goToProfilePage,
+        onSettingsTap: goToSettingsPage,
+        onLogOutTap: signUserOut,
+      ),
+      body: FutureBuilder<List<Product>>(
+        future: productsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            // product list
-            SizedBox(
-              height: 550,
-              child: ListView.builder(
-                itemCount: products.length,
-                scrollDirection: Axis.horizontal,
+          final products = snapshot.data!;
+
+          return ListView(
+            children: [
+              // search bar
+              Padding(
                 padding: const EdgeInsets.all(15),
-                itemBuilder: (context, index) {
-                  final product = products[index];
-                  return MyProductTile(product: product);
-                },
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: "Search Product",
+                    prefixIcon: const Icon(Icons.search),
+                    contentPadding: const EdgeInsets.all(15),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onChanged: (text) => setState(() => searchText = text),
+                ),
               ),
-            ),
-          ],
-        ));
+
+              // request product
+
+              // products list
+              products
+                      .where((product) => product.name
+                          .toLowerCase()
+                          .contains(searchText.toLowerCase()))
+                      .isNotEmpty
+                  ? SizedBox(
+                      height: 600,
+                      child: ListView.builder(
+                        itemCount: products
+                            .where((product) => product.name
+                                .toLowerCase()
+                                .contains(searchText.toLowerCase()))
+                            .length,
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.all(15),
+                        itemBuilder: (context, index) {
+                          final product = products
+                              .where((product) => product.name
+                                  .toLowerCase()
+                                  .contains(searchText.toLowerCase()))
+                              .toList()[index];
+                          return MyProductTile(product: product);
+                        },
+                      ),
+                    )
+                  : const Center(child: Text('No product disponible')),
+            ],
+          );
+        },
+      ),
+    );
   }
 }
