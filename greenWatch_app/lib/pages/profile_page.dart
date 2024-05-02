@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:auth_app/components/text_box.dart';
-import 'package:auth_app/components/my_button.dart';
+import 'package:green_watch_app/components/text_box.dart';
+import 'package:green_watch_app/components/my_button.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});

@@ -1,11 +1,11 @@
-import 'package:auth_app/components/my_dropdown.dart';
+import 'package:green_watch_app/components/my_dropdown.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:auth_app/components/my_button.dart';
-import 'package:auth_app/components/my_textfield.dart';
+import 'package:green_watch_app/components/my_button.dart';
+import 'package:green_watch_app/components/my_textfield.dart';
 
 class SignUp extends StatefulWidget {
   final Function()? onTap;

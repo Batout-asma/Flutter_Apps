@@ -1,6 +1,6 @@
-import 'package:auth_app/components/my_drawer.dart';
-import 'package:auth_app/pages/profile_page.dart';
-import 'package:auth_app/pages/settings_page.dart';
+import 'package:green_watch_app/components/my_drawer.dart';
+import 'package:green_watch_app/pages/profile_page.dart';
+import 'package:green_watch_app/pages/settings_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

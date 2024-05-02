@@ -1,5 +1,5 @@
-import 'package:auth_app/components/my_button.dart';
-import 'package:auth_app/models/product.dart';
+import 'package:green_watch_app/components/my_button.dart';
+import 'package:green_watch_app/models/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class _CartState extends State<Cart> {
   @override
   void initState() {
     super.initState();
-    _fetchCartItems(); // Fetch cart items on page load
+    _fetchCartItems();
   }
 
   void _fetchCartItems() async {
@@ -29,8 +29,9 @@ class _CartState extends State<Cart> {
 
     setState(() {
       cartItems.clear();
-      cartItems.addAll(
-          cartSnapshot.docs.map((doc) => Product.fromMap(doc.data())).toList());
+      cartItems.addAll(cartSnapshot.docs
+          .map((doc) => Product.fromMapClient(doc.data()))
+          .toList());
     });
   }
 
@@ -58,15 +59,13 @@ class _CartState extends State<Cart> {
                   .doc(user.email);
               final cartRef = userDocRef.collection('Cart');
 
-              final productRef = cartRef
-                  .where('name', isEqualTo: product.name)
-                  .limit(1)
-                  .get(); // Get the specific document
+              final productRef =
+                  cartRef.where('name', isEqualTo: product.name).limit(1).get();
               productRef.then((querySnapshot) {
                 if (querySnapshot.docs.isNotEmpty) {
-                  querySnapshot.docs.first.reference
-                      .delete(); // Delete the document from Firestore
+                  querySnapshot.docs.first.reference.delete();
                 } else {
+                  // ignore: avoid_print
                   print('Product not found in cart (might be a rare case)');
                 }
               });
@@ -79,7 +78,6 @@ class _CartState extends State<Cart> {
   }
 
   void payBtnPressed(BuildContext context) async {
-    // Implement actual payment logic here based on your cart data
     showDialog(
       context: context,
       builder: (context) => const AlertDialog(
@@ -98,8 +96,8 @@ class _CartState extends State<Cart> {
         } // Delete each document
       });
 
-      cartItems.clear(); // Clear local cart list for UI update
-      setState(() {}); // Update UI after cart clearing
+      cartItems.clear();
+      setState(() {});
     }
   }
 
@@ -139,9 +137,7 @@ class _CartState extends State<Cart> {
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 50, 0, 50),
             child: MyButton(
-              onTap: cartItems.isEmpty
-                  ? null
-                  : () => payBtnPressed(context), // Disable if empty cart
+              onTap: cartItems.isEmpty ? null : () => payBtnPressed(context),
               text: "P A Y  N O W",
               enabled: cartItems.isNotEmpty,
             ),

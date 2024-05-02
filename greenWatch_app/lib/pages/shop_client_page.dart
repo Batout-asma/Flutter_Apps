@@ -1,9 +1,9 @@
-import 'package:auth_app/components/my_drawer.dart';
-import 'package:auth_app/components/my_product_tile.dart';
-import 'package:auth_app/models/product.dart';
-import 'package:auth_app/pages/cart_page.dart';
-import 'package:auth_app/pages/profile_page.dart';
-import 'package:auth_app/pages/settings_page.dart' as my_settings;
+import 'package:green_watch_app/components/my_drawer.dart';
+import 'package:green_watch_app/components/my_client_product_tile.dart';
+import 'package:green_watch_app/models/product.dart';
+import 'package:green_watch_app/pages/cart_page.dart';
+import 'package:green_watch_app/pages/profile_page.dart';
+import 'package:green_watch_app/pages/settings_page.dart' as my_settings;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -41,20 +41,21 @@ class _ShopClientState extends State<ShopClient> {
       });
     } catch (error) {
       // ignore: avoid_print
-      print("Error fetching products: $error"); // Log the error
+      print("Error fetching products: $error");
     }
   }
 
   void addToCart(Product product) async {
     final userDocRef =
-        FirebaseFirestore.instance.collection('users').doc(currentUser!.email);
-    final cartRef = userDocRef.collection('cart');
+        FirebaseFirestore.instance.collection('Users').doc(currentUser!.email);
+    final cartRef = userDocRef.collection('Cart');
 
     final cartDocSnap = await userDocRef.get();
     if (!cartDocSnap.exists) {
       await userDocRef.set({'Cart': []});
     }
     await cartRef.add(product.toMap());
+    // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('"${product.name}" added to cart!'),
@@ -183,7 +184,9 @@ class _ShopClientState extends State<ShopClient> {
                                   .toLowerCase()
                                   .contains(searchText.toLowerCase()))
                               .toList()[index];
-                          return MyProductTile(product: product);
+                          return MyClientProductTile(
+                            product: product,
+                          );
                         },
                       ),
                     )

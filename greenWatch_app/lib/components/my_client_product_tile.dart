@@ -1,16 +1,16 @@
-import 'package:auth_app/models/product.dart';
+import 'package:green_watch_app/models/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class MyProductTile extends StatelessWidget {
+class MyClientProductTile extends StatelessWidget {
   final Product product;
+  // ignore: prefer_typing_uninitialized_variables
 
-  const MyProductTile({
+  const MyClientProductTile({
     super.key,
     required this.product,
   });
-
   void addToCart(BuildContext context) async {
     final currentUser = FirebaseAuth.instance.currentUser!;
     final userDocRef =
@@ -31,49 +31,6 @@ class MyProductTile extends StatelessWidget {
       ),
     );
   }
-  /*
-  void addToCart(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add to Cart'),
-        content: Text(
-            'Are you sure you want to add "${product.name}" to your cart?'),
-        actions: [
-          // Cancel button
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          // Add button
-          TextButton(
-            onPressed: () async {
-              final auth = Provider.of<FirebaseAuth>(context, listen: false);
-              final currentUser = auth.currentUser;
-
-              if (currentUser != null) {
-                final userDocRef = FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(currentUser.email);
-                final cartRef = userDocRef.collection('cart');
-
-                await cartRef.add(product.toMap());
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('"${product.name}" added to cart!'),
-                  ),
-                );
-              } else {
-                // Handle case when user is not signed in (optional)
-                print('Cannot add to cart');
-              }
-            },
-            child: const Text('Add'),
-          ),
-        ],
-      ),
-    );
-  }*/
 
   @override
   Widget build(BuildContext context) {

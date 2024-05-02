@@ -1,8 +1,8 @@
-import 'package:auth_app/pages/chatbox_page.dart';
-import 'package:auth_app/pages/home_client_page.dart';
-import 'package:auth_app/pages/home_seller_page.dart';
-import 'package:auth_app/pages/shop_client_page.dart';
-import 'package:auth_app/pages/shop_seller_page.dart';
+import 'package:green_watch_app/pages/chatbox_page.dart';
+import 'package:green_watch_app/pages/home_client_page.dart';
+import 'package:green_watch_app/pages/home_seller_page.dart';
+import 'package:green_watch_app/pages/shop_client_page.dart';
+import 'package:green_watch_app/pages/shop_seller_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

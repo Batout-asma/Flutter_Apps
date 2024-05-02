@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:auth_app/components/my_list_tile.dart';
+import 'package:green_watch_app/components/my_list_tile.dart';
 
 class MyDrawer extends StatelessWidget {
   final void Function()? onProfileTap;

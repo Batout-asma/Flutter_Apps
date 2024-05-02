@@ -1,10 +1,10 @@
-import 'package:auth_app/pages/forgot_pw_page.dart';
+import 'package:green_watch_app/pages/forgot_pw_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:auth_app/components/my_button.dart';
-import 'package:auth_app/components/my_textfield.dart';
+import 'package:green_watch_app/components/my_button.dart';
+import 'package:green_watch_app/components/my_textfield.dart';
 
 class LogIn extends StatefulWidget {
   final Function()? onTap;

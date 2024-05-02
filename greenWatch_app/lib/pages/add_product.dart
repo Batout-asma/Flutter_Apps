@@ -1,5 +1,5 @@
-import 'package:auth_app/components/my_button.dart';
-import 'package:auth_app/components/my_textfield.dart';
+import 'package:green_watch_app/components/my_button.dart';
+import 'package:green_watch_app/components/my_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,20 +22,23 @@ class _AddFormState extends State<AddForm> {
   final priceController = TextEditingController();
 
   // add product
-  void addProduct() async {
+  Future<String> addProduct() async {
     final String productId = const Uuid().v4();
     // Create 'Products' in the database
     await FirebaseFirestore.instance.collection("Products").doc(productId).set(
       {
-        'Name': nameController.text,
-        'Description': descriptionController.text,
-        'Price': priceController.text,
+        'id': productId,
+        'name': nameController.text,
+        'description': descriptionController.text,
+        'price': priceController.text,
         'userEmail': currentUser?.email,
       },
     );
     nameController.text = '';
     descriptionController.text = '';
     priceController.text = '';
+
+    return productId;
   }
 
   @override

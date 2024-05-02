@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
-import 'package:auth_app/pages/login_page.dart';
-import 'package:auth_app/pages/sign_up_page.dart';
+import 'package:green_watch_app/pages/login_page.dart';
+import 'package:green_watch_app/pages/sign_up_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginOrRegister extends StatefulWidget {
