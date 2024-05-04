@@ -1,9 +1,9 @@
-import 'package:green_watch_app/models/product.dart';
 import 'package:flutter/material.dart';
+import 'package:green_watch_app/models/product.dart';
 
 class MySellerProductTile extends StatelessWidget {
   final Product product;
-  final Function(String) deleteProduct;
+  final Function(Product) deleteProduct;
 
   const MySellerProductTile({
     super.key,
@@ -71,7 +71,7 @@ class MySellerProductTile extends StatelessWidget {
 
               // Delete button
               IconButton(
-                onPressed: () => showDeleteDialog(context, product.name),
+                onPressed: () => showDeleteDialog(context, product),
                 icon: const Icon(Icons.remove),
               ),
             ],
@@ -81,7 +81,7 @@ class MySellerProductTile extends StatelessWidget {
     );
   }
 
-  void showDeleteDialog(BuildContext context, String productId) {
+  void showDeleteDialog(BuildContext context, Product product) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -94,7 +94,7 @@ class MySellerProductTile extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              deleteProduct(productId);
+              deleteProduct(product);
               Navigator.pop(context);
             },
             child: const Text('Delete'),
