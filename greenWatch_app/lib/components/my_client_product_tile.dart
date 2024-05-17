@@ -25,6 +25,7 @@ class MyClientProductTile extends StatelessWidget {
     }
 
     await cartRef.add(product.toMap());
+    // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('"${product.name}" added to cart!'),

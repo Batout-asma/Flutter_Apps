@@ -72,7 +72,10 @@ class MySellerProductTile extends StatelessWidget {
               // Delete button
               IconButton(
                 onPressed: () => showDeleteDialog(context, product),
-                icon: const Icon(Icons.remove),
+                icon: const Icon(
+                  Icons.remove,
+                  size: 30,
+                ),
               ),
             ],
           ),

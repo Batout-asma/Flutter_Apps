@@ -3,6 +3,7 @@ import 'package:green_watch_app/components/my_client_product_tile.dart';
 import 'package:green_watch_app/models/product.dart';
 import 'package:green_watch_app/pages/cart_page.dart';
 import 'package:green_watch_app/pages/profile_page.dart';
+import 'package:green_watch_app/pages/request_product.dart';
 import 'package:green_watch_app/pages/settings_page.dart' as my_settings;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -63,6 +64,16 @@ class _ShopClientState extends State<ShopClient> {
     );
   }
 
+  void goToRequestPage() {
+    // Go to request page
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const RequestProduct(),
+      ),
+    );
+  }
+
   // Sign out user method
   void signUserOut() {
     FirebaseAuth.instance.signOut();
@@ -107,7 +118,7 @@ class _ShopClientState extends State<ShopClient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.green[600],
@@ -144,23 +155,32 @@ class _ShopClientState extends State<ShopClient> {
 
           return ListView(
             children: [
-              // search bar
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: "Search Product",
-                    prefixIcon: const Icon(Icons.search),
-                    contentPadding: const EdgeInsets.all(15),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
+              if (snapshot.hasData)
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: "Search Product",
+                            prefixIcon: const Icon(Icons.search),
+                            contentPadding: const EdgeInsets.all(15),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onChanged: (text) =>
+                              setState(() => searchText = text),
+                        ),
+                      ),
                     ),
-                  ),
-                  onChanged: (text) => setState(() => searchText = text),
+                    IconButton(
+                      icon: const Icon(Icons.post_add_rounded),
+                      onPressed: goToRequestPage,
+                    ),
+                  ],
                 ),
-              ),
-
-              // request product
 
               // products list
               products

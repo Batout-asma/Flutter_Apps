@@ -5,37 +5,36 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-class AddProduct extends StatefulWidget {
-  const AddProduct({super.key});
+class RequestProduct extends StatefulWidget {
+  const RequestProduct({super.key});
 
   @override
-  State<AddProduct> createState() => _AddProductState();
+  State<RequestProduct> createState() => _RequestProductState();
 }
 
-class _AddProductState extends State<AddProduct> {
+class _RequestProductState extends State<RequestProduct> {
   //user that is logged in
-  final currentUser = FirebaseAuth.instance.currentUser;
+  final user = FirebaseAuth.instance.currentUser;
 
   //  Field controllers
   final nameController = TextEditingController();
-  final descriptionController = TextEditingController();
   final priceController = TextEditingController();
 
-  // add product
-  Future<String> addProduct() async {
+  // request product
+  Future<String> requestProduct() async {
     final String productId = const Uuid().v4();
-    // Create 'Products' in the database
-    await FirebaseFirestore.instance.collection("Products").doc(productId).set(
+    // Create 'Requests' in the database
+    await FirebaseFirestore.instance
+        .collection("Requests")
+        .doc(user?.email)
+        .set(
       {
         'id': productId,
         'name': nameController.text,
-        'description': descriptionController.text,
         'price': priceController.text,
-        'userEmail': currentUser?.email,
       },
     );
     nameController.text = '';
-    descriptionController.text = '';
     priceController.text = '';
 
     return productId;
@@ -49,7 +48,7 @@ class _AddProductState extends State<AddProduct> {
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.green[600],
         title: const Text(
-          'Add Item',
+          'Request Product',
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -61,7 +60,7 @@ class _AddProductState extends State<AddProduct> {
 
               // Title
               const Text(
-                'Add a new product',
+                'Fill the form for the request',
                 style: TextStyle(
                   color: Color.fromRGBO(60, 60, 60, 1),
                   fontSize: 20,
@@ -81,15 +80,6 @@ class _AddProductState extends State<AddProduct> {
 
               // description field
               MyTextField(
-                controller: descriptionController,
-                hintText: 'Description',
-                obscureText: false,
-              ),
-
-              const SizedBox(height: 10),
-
-              // description field
-              MyTextField(
                 controller: priceController,
                 hintText: 'Price',
                 obscureText: false,
@@ -99,8 +89,8 @@ class _AddProductState extends State<AddProduct> {
 
               // Login Btn
               MyButton(
-                onTap: addProduct,
-                text: 'A D D',
+                onTap: requestProduct,
+                text: 'R E Q U E S T',
                 enabled: true,
               ),
             ],

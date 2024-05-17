@@ -104,7 +104,7 @@ class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.green[600],
@@ -123,12 +123,19 @@ class _CartState extends State<Cart> {
                     itemCount: cartItems.length,
                     itemBuilder: (context, index) {
                       final product = cartItems[index];
-                      return ListTile(
-                        title: Text(product.name),
-                        subtitle: Text(product.price.toStringAsFixed(2)),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.remove),
-                          onPressed: () => removeItemFromCart(product),
+                      return Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Material(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.green.shade300,
+                          child: ListTile(
+                            title: Text(product.name),
+                            subtitle: Text(product.price.toStringAsFixed(2)),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.remove),
+                              onPressed: () => removeItemFromCart(product),
+                            ),
+                          ),
                         ),
                       );
                     },

@@ -21,7 +21,6 @@ class _HomeSellerState extends State<HomeSeller> {
   List<Product> products = [];
 
   void deleteProduct(Product product) async {
-    // Get a reference to the specific product document
     final productRef =
         FirebaseFirestore.instance.collection('Products').doc(product.id);
 
@@ -29,20 +28,19 @@ class _HomeSellerState extends State<HomeSeller> {
       // Delete the product document
       await productRef.delete();
 
-      // Update the local product list efficiently
+      // Update the local product list
       setState(() {
         products.removeWhere((item) => item.id == product.id);
       });
 
-      // Show success snackbar
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Product deleted successfully!'),
         ),
       );
     } catch (e) {
-      print('Error deleting product: $e');
-      // Show error snackbar
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error deleting product: $e'),
@@ -103,7 +101,7 @@ class _HomeSellerState extends State<HomeSeller> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
           iconTheme: const IconThemeData(color: Colors.white),
           backgroundColor: Colors.green[600],
@@ -123,16 +121,19 @@ class _HomeSellerState extends State<HomeSeller> {
             // shop subtitle
             Center(
               child: Text(
-                "Your products list",
+                "My list of products",
                 style: TextStyle(color: Colors.green[900], fontSize: 16),
               ),
             ),
 
-            // Product list with efficient deletion
             SizedBox(
               height: 550,
               child: products.isEmpty
-                  ? const Center(child: Text("No products found"))
+                  ? Center(
+                      child: Text(
+                      "No owned product, try add some.",
+                      style: TextStyle(color: Colors.grey[900], fontSize: 20),
+                    ))
                   : ListView.builder(
                       itemCount: products.length,
                       scrollDirection: Axis.horizontal,
