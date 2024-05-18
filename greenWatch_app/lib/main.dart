@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:green_watch_app/pages/wrapper.dart';
+import 'package:green_watch_app/services/wrapper.dart';
 // import 'package:auth_app/theme/dark_theme.dart';
 import 'package:green_watch_app/theme/light_theme.dart';
 

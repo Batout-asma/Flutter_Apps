@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:green_watch_app/components/my_drawer.dart';
 import 'package:green_watch_app/models/product.dart';
 import 'package:green_watch_app/pages/add_product.dart';
+import 'package:green_watch_app/pages/chat_page.dart';
 import 'package:green_watch_app/pages/profile_page.dart';
 import 'package:green_watch_app/pages/settings_page.dart' as my_settings;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,9 +16,7 @@ class ShopSeller extends StatefulWidget {
 }
 
 class _ShopSellerState extends State<ShopSeller> {
-  final currentUser = FirebaseAuth.instance.currentUser;
-  late Future<List<Product>>
-      requestsFuture; // Use 'late' for non-nullable Future
+  late Future<List<Product>> requestsFuture;
 
   @override
   void initState() {
@@ -31,9 +30,7 @@ class _ShopSellerState extends State<ShopSeller> {
           await FirebaseFirestore.instance.collection('Requests').get();
       return snapshot.docs.map((doc) => Product.fromFirestore(doc)).toList();
     } catch (error) {
-      // Handle error gracefully
-      print('Error fetching requests: $error');
-      throw error; // Rethrow the error to notify FutureBuilder
+      rethrow;
     }
   }
 
@@ -68,12 +65,38 @@ class _ShopSellerState extends State<ShopSeller> {
     );
   }
 
-  void goToFormPage() {
+  void goToAddPage() {
     // Go to cart page
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => const AddProduct(),
+      ),
+    );
+  }
+
+  void startConversation(String requestOwnerEmail) async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    QuerySnapshot existCnv = await FirebaseFirestore.instance
+        .collection('Conversations')
+        .where('receiver', isEqualTo: user?.email)
+        .where('sender', isEqualTo: requestOwnerEmail)
+        .get();
+    if (existCnv.docs.isEmpty) {
+      await FirebaseFirestore.instance.collection('Conversations').add({
+        'receiver': user?.email,
+        'sender': requestOwnerEmail,
+      });
+    }
+    Navigator.push(
+      // ignore: use_build_context_synchronously
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChatPage(
+          userEmail: user?.email,
+          ownerEmail: requestOwnerEmail,
+        ),
       ),
     );
   }
@@ -93,7 +116,7 @@ class _ShopSellerState extends State<ShopSeller> {
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
             child: IconButton(
-              onPressed: () => goToFormPage(),
+              onPressed: () => goToAddPage(),
               icon: const Icon(Icons.add_circle_rounded),
             ),
           )
@@ -145,7 +168,9 @@ class _ShopSellerState extends State<ShopSeller> {
                         subtitle: Text(request.price.toStringAsFixed(2)),
                         trailing: IconButton(
                           icon: const Icon(Icons.chat_rounded),
-                          onPressed: () {},
+                          onPressed: () {
+                            startConversation(request.owner);
+                          },
                         ),
                       ),
                     ),

@@ -1,4 +1,5 @@
-import 'package:green_watch_app/pages/chatbox_page.dart';
+import 'package:green_watch_app/pages/chatbox_client_page.dart';
+import 'package:green_watch_app/pages/chatbox_seller_page.dart';
 import 'package:green_watch_app/pages/home_client_page.dart';
 import 'package:green_watch_app/pages/home_seller_page.dart';
 import 'package:green_watch_app/pages/shop_client_page.dart';
@@ -37,13 +38,13 @@ class _LayoutState extends State<Layout> {
             usertype = 1;
             screens = [
               const HomeSeller(),
-              const ChatBox(),
+              const ChatBoxSeller(),
               const ShopSeller(),
             ];
           } else {
             screens = [
               const HomeClient(),
-              const ChatBox(),
+              const ChatBoxClient(),
               const ShopClient(),
             ];
           }
@@ -58,7 +59,7 @@ class _LayoutState extends State<Layout> {
 
     screens = [
       const Center(child: CircularProgressIndicator()),
-      const ChatBox(),
+      const ChatBoxSeller(),
       const ShopClient(),
     ];
   }

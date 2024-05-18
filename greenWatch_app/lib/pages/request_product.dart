@@ -32,6 +32,7 @@ class _RequestProductState extends State<RequestProduct> {
         'id': productId,
         'name': nameController.text,
         'price': priceController.text,
+        'owner': user?.email,
       },
     );
     nameController.text = '';

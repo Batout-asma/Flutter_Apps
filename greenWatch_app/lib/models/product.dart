@@ -5,12 +5,14 @@ class Product {
   final String name;
   final double price;
   final String description;
+  final String owner;
 
   Product({
     required this.id,
     required this.name,
     required this.price,
     required this.description,
+    required this.owner,
   });
 
   Map<String, dynamic> toMap() {
@@ -28,6 +30,7 @@ class Product {
       name: data['name'] as String,
       price: data['price'] as double,
       description: data['description'] as String,
+      owner: data['owner'] as String,
     );
   }
 
@@ -37,6 +40,7 @@ class Product {
       name: data['name']?.toString() ?? 'Unknown Product',
       price: double.tryParse(data['price']) ?? 0.0,
       description: data['description']?.toString() ?? '',
+      owner: data['owner']?.toString() ?? '',
     );
   }
 
@@ -48,6 +52,7 @@ class Product {
       name: data['name']?.toString() ?? 'Unknown Product',
       price: double.tryParse(data['price']) ?? 0.0,
       description: data['description']?.toString() ?? '',
+      owner: data['owner']?.toString() ?? '',
     );
   }
 
