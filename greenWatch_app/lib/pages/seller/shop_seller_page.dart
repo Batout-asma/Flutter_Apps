@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:green_watch_app/components/my_drawer.dart';
 import 'package:green_watch_app/models/product.dart';
-import 'package:green_watch_app/pages/add_product.dart';
+import 'package:green_watch_app/pages/seller/add_product.dart';
 import 'package:green_watch_app/pages/chat_page.dart';
 import 'package:green_watch_app/pages/profile_page.dart';
 import 'package:green_watch_app/pages/settings_page.dart' as my_settings;

@@ -1,9 +1,9 @@
 import 'package:green_watch_app/components/my_drawer.dart';
 import 'package:green_watch_app/components/my_client_product_tile.dart';
 import 'package:green_watch_app/models/product.dart';
-import 'package:green_watch_app/pages/cart_page.dart';
+import 'package:green_watch_app/pages/client/cart_page.dart';
 import 'package:green_watch_app/pages/profile_page.dart';
-import 'package:green_watch_app/pages/request_product.dart';
+import 'package:green_watch_app/pages/client/request_product.dart';
 import 'package:green_watch_app/pages/settings_page.dart' as my_settings;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
