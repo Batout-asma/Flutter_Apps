@@ -19,31 +19,17 @@ class ShopClient extends StatefulWidget {
 class _ShopClientState extends State<ShopClient> {
   final currentUser = FirebaseAuth.instance.currentUser;
   Future<List<Product>>? productsFuture;
+  String searchText = '';
   @override
   void initState() {
     super.initState();
-    productsFuture = _fetchProducts();
+    productsFuture = fetchProducts();
   }
 
-  Future<List<Product>> _fetchProducts() async {
+  Future<List<Product>> fetchProducts() async {
     final snapshot =
         await FirebaseFirestore.instance.collection('Products').get();
     return snapshot.docs.map((doc) => Product.fromFirestore(doc)).toList();
-  }
-
-  List<Product> shopList = [];
-  String searchText = '';
-
-  Future<void> getProductList() async {
-    try {
-      var data = await FirebaseFirestore.instance.collection('Products').get();
-      setState(() {
-        shopList = List.from(data.docs.map((doc) => Product.fromSnapshot(doc)));
-      });
-    } catch (error) {
-      // ignore: avoid_print
-      print("Error fetching products: $error");
-    }
   }
 
   void addToCart(Product product) async {
@@ -55,7 +41,7 @@ class _ShopClientState extends State<ShopClient> {
     if (!cartDocSnap.exists) {
       await userDocRef.set({'Cart': []});
     }
-    await cartRef.add(product.toMap());
+    await cartRef.add({'productId': product.id});
     // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -151,66 +137,60 @@ class _ShopClientState extends State<ShopClient> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final products = snapshot.data!;
+          final products = snapshot.data!
+              .where((product) =>
+                  product.name.toLowerCase().contains(searchText.toLowerCase()))
+              .toList();
 
           return ListView(
             children: [
-              if (snapshot.hasData)
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            labelText: "Search Product",
-                            prefixIcon: const Icon(Icons.search),
-                            contentPadding: const EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: "Search Product",
+                          prefixIcon: const Icon(Icons.search),
+                          contentPadding: const EdgeInsets.all(15),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          onChanged: (text) =>
-                              setState(() => searchText = text),
                         ),
+                        onChanged: (text) => setState(() => searchText = text),
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.post_add_rounded),
-                      onPressed: goToRequestPage,
-                    ),
-                  ],
-                ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.post_add_rounded),
+                    onPressed: goToRequestPage,
+                  ),
+                ],
+              ),
 
               // products list
-              products
-                      .where((product) => product.name
-                          .toLowerCase()
-                          .contains(searchText.toLowerCase()))
-                      .isNotEmpty
+              products.isNotEmpty
                   ? SizedBox(
                       height: 600,
                       child: ListView.builder(
-                        itemCount: products
-                            .where((product) => product.name
-                                .toLowerCase()
-                                .contains(searchText.toLowerCase()))
-                            .length,
+                        itemCount: products.length,
                         scrollDirection: Axis.horizontal,
                         padding: const EdgeInsets.all(15),
                         itemBuilder: (context, index) {
-                          final product = products
-                              .where((product) => product.name
-                                  .toLowerCase()
-                                  .contains(searchText.toLowerCase()))
-                              .toList()[index];
+                          final product = products[index];
                           return MyClientProductTile(
                             product: product,
                           );
                         },
                       ),
                     )
-                  : const Center(child: Text('No product Available')),
+                  : const SizedBox(
+                      height: 10,
+                      child: Center(
+                        child: Text('No product Available'),
+                      ),
+                    ),
             ],
           );
         },

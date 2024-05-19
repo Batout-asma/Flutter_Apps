@@ -81,10 +81,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             height: 20,
           ),
 
-          MyTextField(
-            controller: emailController,
-            hintText: 'Email',
-            obscureText: false,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: MyTextField(
+              controller: emailController,
+              hintText: 'Email',
+              obscureText: false,
+            ),
           ),
 
           const SizedBox(

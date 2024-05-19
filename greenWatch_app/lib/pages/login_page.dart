@@ -100,19 +100,25 @@ class _LogInState extends State<LogIn> {
                 const SizedBox(height: 25),
 
                 // Email field
-                MyTextField(
-                  controller: emailController,
-                  hintText: 'Email',
-                  obscureText: false,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: MyTextField(
+                    controller: emailController,
+                    hintText: 'Email',
+                    obscureText: false,
+                  ),
                 ),
 
                 const SizedBox(height: 10),
 
                 // password field
-                MyTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  obscureText: true,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: MyTextField(
+                    controller: passwordController,
+                    hintText: 'Password',
+                    obscureText: true,
+                  ),
                 ),
 
                 const SizedBox(height: 10),

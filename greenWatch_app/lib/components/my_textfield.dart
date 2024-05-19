@@ -14,24 +14,21 @@ class MyTextField extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50.0),
-      child: TextField(
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Color.fromRGBO(117, 117, 117, 1)),
-          ),
-          fillColor: const Color.fromARGB(255, 236, 236, 236),
-          filled: true,
-          hintText: hintText,
-          hintStyle: TextStyle(
-            color: Colors.grey[500],
-          ),
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      decoration: InputDecoration(
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Color.fromRGBO(117, 117, 117, 1)),
+        ),
+        fillColor: const Color.fromARGB(255, 236, 236, 236),
+        filled: true,
+        hintText: hintText,
+        hintStyle: TextStyle(
+          color: Colors.grey[500],
         ),
       ),
     );

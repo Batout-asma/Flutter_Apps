@@ -1,8 +1,8 @@
-import 'package:green_watch_app/components/my_button.dart';
-import 'package:green_watch_app/components/my_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:green_watch_app/components/my_button.dart';
+import 'package:green_watch_app/components/my_textfield.dart';
 import 'package:uuid/uuid.dart';
 
 class RequestProduct extends StatefulWidget {
@@ -19,27 +19,6 @@ class _RequestProductState extends State<RequestProduct> {
   //  Field controllers
   final nameController = TextEditingController();
   final priceController = TextEditingController();
-
-  // request product
-  Future<String> requestProduct() async {
-    final String productId = const Uuid().v4();
-    // Create 'Requests' in the database
-    await FirebaseFirestore.instance
-        .collection("Requests")
-        .doc(user?.email)
-        .set(
-      {
-        'id': productId,
-        'name': nameController.text,
-        'price': priceController.text,
-        'owner': user?.email,
-      },
-    );
-    nameController.text = '';
-    priceController.text = '';
-
-    return productId;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,19 +50,25 @@ class _RequestProductState extends State<RequestProduct> {
               const SizedBox(height: 25),
 
               // name field
-              MyTextField(
-                controller: nameController,
-                hintText: 'Product Name',
-                obscureText: false,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: MyTextField(
+                  controller: nameController,
+                  hintText: 'Product Name',
+                  obscureText: false,
+                ),
               ),
 
               const SizedBox(height: 10),
 
               // description field
-              MyTextField(
-                controller: priceController,
-                hintText: 'Price',
-                obscureText: false,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: MyTextField(
+                  controller: priceController,
+                  hintText: 'Price',
+                  obscureText: false,
+                ),
               ),
 
               const SizedBox(height: 20),
@@ -99,5 +84,26 @@ class _RequestProductState extends State<RequestProduct> {
         ),
       ),
     );
+  }
+
+  // request product
+  Future<String> requestProduct() async {
+    final String productId = const Uuid().v4();
+    // Create 'Requests' in the database
+    await FirebaseFirestore.instance
+        .collection("Requests")
+        .doc(user?.email)
+        .set(
+      {
+        'id': productId,
+        'name': nameController.text,
+        'price': priceController.text,
+        'owner': user?.email,
+      },
+    );
+    nameController.text = '';
+    priceController.text = '';
+
+    return productId;
   }
 }

@@ -14,25 +14,30 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   final List<Product> cartItems = [];
   final user = FirebaseAuth.instance.currentUser!;
+
   @override
   void initState() {
     super.initState();
-    _fetchCartItems();
+    fetchCartItems();
   }
 
-  void _fetchCartItems() async {
-    final userDoc =
-        FirebaseFirestore.instance.collection('Users').doc(user.email);
-    final cart = userDoc.collection('Cart');
+  void fetchCartItems() async {
+    try {
+      final userDoc =
+          FirebaseFirestore.instance.collection('Users').doc(user.email);
+      final cart = userDoc.collection('Cart');
 
-    final cartSnapshot = await cart.get();
+      final cartSnapshot = await cart.get();
 
-    setState(() {
-      cartItems.clear();
-      cartItems.addAll(cartSnapshot.docs
-          .map((doc) => Product.fromMapClient(doc.data()))
-          .toList());
-    });
+      setState(() {
+        cartItems.clear();
+        cartItems.addAll(cartSnapshot.docs
+            .map((doc) => Product.fromMapClient(doc.data()))
+            .toList());
+      });
+    } catch (error) {
+      print("Error fetching cart items: $error");
+    }
   }
 
   void removeItemFromCart(Product product) async {
@@ -41,32 +46,26 @@ class _CartState extends State<Cart> {
       builder: (context) => AlertDialog(
         content: const Text("Remove this item from your cart?"),
         actions: [
-          // Cancel button
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text("Cancel"),
           ),
-          // Accept button with Firestore removal
           TextButton(
             onPressed: () async {
               Navigator.pop(context);
               cartItems.remove(product);
               setState(() {});
 
-              // Remove from Firestore
               final userDocRef = FirebaseFirestore.instance
                   .collection('Users')
                   .doc(user.email);
               final cartRef = userDocRef.collection('Cart');
 
               final productRef =
-                  cartRef.where('name', isEqualTo: product.name).limit(1).get();
+                  cartRef.where('id', isEqualTo: product.id).limit(1).get();
               productRef.then((querySnapshot) {
                 if (querySnapshot.docs.isNotEmpty) {
                   querySnapshot.docs.first.reference.delete();
-                } else {
-                  // ignore: avoid_print
-                  print('Product not found in cart (might be a rare case)');
                 }
               });
             },

@@ -21,6 +21,7 @@ class Product {
       'name': name,
       'price': price,
       'description': description,
+      'owner': owner,
     };
   }
 
@@ -28,7 +29,9 @@ class Product {
     return Product(
       id: data['id'] as String,
       name: data['name'] as String,
-      price: data['price'] as double,
+      price: (data['price'] is int
+          ? (data['price'] as int).toDouble()
+          : data['price']) as double,
       description: data['description'] as String,
       owner: data['owner'] as String,
     );

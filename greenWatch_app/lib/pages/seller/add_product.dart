@@ -31,7 +31,7 @@ class _AddProductState extends State<AddProduct> {
         'name': nameController.text,
         'description': descriptionController.text,
         'price': priceController.text,
-        'userEmail': currentUser?.email,
+        'owner': currentUser?.email,
       },
     );
     nameController.text = '';
@@ -71,28 +71,37 @@ class _AddProductState extends State<AddProduct> {
               const SizedBox(height: 25),
 
               // name field
-              MyTextField(
-                controller: nameController,
-                hintText: 'Product Name',
-                obscureText: false,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: MyTextField(
+                  controller: nameController,
+                  hintText: 'Product Name',
+                  obscureText: false,
+                ),
               ),
 
               const SizedBox(height: 10),
 
               // description field
-              MyTextField(
-                controller: descriptionController,
-                hintText: 'Description',
-                obscureText: false,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: MyTextField(
+                  controller: descriptionController,
+                  hintText: 'Description',
+                  obscureText: false,
+                ),
               ),
 
               const SizedBox(height: 10),
 
               // description field
-              MyTextField(
-                controller: priceController,
-                hintText: 'Price',
-                obscureText: false,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: MyTextField(
+                  controller: priceController,
+                  hintText: 'Price',
+                  obscureText: false,
+                ),
               ),
 
               const SizedBox(height: 20),

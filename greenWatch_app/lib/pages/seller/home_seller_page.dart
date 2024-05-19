@@ -58,7 +58,7 @@ class _HomeSellerState extends State<HomeSeller> {
   void fetchUserProducts() async {
     final userDoc = FirebaseFirestore.instance.collection('Products');
     final querySnapshot =
-        await userDoc.where('userEmail', isEqualTo: user.email).get();
+        await userDoc.where('owner', isEqualTo: user.email).get();
 
     setState(() {
       products =

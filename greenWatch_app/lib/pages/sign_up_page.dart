@@ -129,28 +129,37 @@ class _SignUpState extends State<SignUp> {
                 const SizedBox(height: 25),
 
                 // Email field
-                MyTextField(
-                  controller: emailController,
-                  hintText: 'Email',
-                  obscureText: false,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: MyTextField(
+                    controller: emailController,
+                    hintText: 'Email',
+                    obscureText: false,
+                  ),
                 ),
 
                 const SizedBox(height: 10),
 
                 // Password field
-                MyTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  obscureText: true,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: MyTextField(
+                    controller: passwordController,
+                    hintText: 'Password',
+                    obscureText: true,
+                  ),
                 ),
 
                 const SizedBox(height: 10),
 
                 // Confirm password field
-                MyTextField(
-                  controller: confirmpasswordController,
-                  hintText: 'Confirm Password',
-                  obscureText: true,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: MyTextField(
+                    controller: confirmpasswordController,
+                    hintText: 'Confirm Password',
+                    obscureText: true,
+                  ),
                 ),
 
                 const SizedBox(height: 10),

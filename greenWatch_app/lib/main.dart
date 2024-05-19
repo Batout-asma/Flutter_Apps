@@ -7,10 +7,7 @@ import 'package:green_watch_app/theme/light_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
-  // idk why i add this line
   WidgetsFlutterBinding.ensureInitialized();
-  // end of line
-
   String databaseURL =
       'https://auth-app-9678a-default-rtdb.europe-west1.firebasedatabase.app';
   String appId = '1:701147182658:android:df1fa6147043d6b57a5fdb';
