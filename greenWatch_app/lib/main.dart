@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
-
-import 'package:green_watch_app/services/wrapper.dart';
-// import 'package:auth_app/theme/dark_theme.dart';
-import 'package:green_watch_app/theme/light_theme.dart';
-
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:green_watch_app/pages/client/home_client_page.dart';
+import 'package:green_watch_app/services/wrapper.dart';
+import 'package:green_watch_app/theme/light_theme.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-void main() async {
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   String databaseURL =
       'https://auth-app-9678a-default-rtdb.europe-west1.firebasedatabase.app';
@@ -23,10 +25,29 @@ void main() async {
       projectId: projectId,
     ),
   );
-  runApp(
-    const MyApp(),
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+  const InitializationSettings initializationSettings =
+      InitializationSettings(android: initializationSettingsAndroid);
+
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    onDidReceiveNotificationResponse:
+        (NotificationResponse notificationResponse) async {
+      if (notificationResponse.payload != null) {
+        debugPrint('notification payload: ${notificationResponse.payload}');
+        if (notificationResponse.payload == 'HomePage') {
+          navigatorKey.currentState?.pushReplacement(
+            MaterialPageRoute(builder: (context) => const HomeClient()),
+          );
+        }
+      }
+    },
   );
+  runApp(const MyApp());
 }
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -34,6 +55,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
       // darkTheme: darkTheme,

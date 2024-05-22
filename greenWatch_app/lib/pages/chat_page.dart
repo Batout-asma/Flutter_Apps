@@ -22,24 +22,6 @@ class _ChatPageState extends State<ChatPage> {
       FirebaseAuth.instance.currentUser!.email.toString();
   final ScrollController scrollController = ScrollController();
 
-  void sendMessage() async {
-    if (messageController.text.isNotEmpty) {
-      await chatService.sendMessage(widget.ownerEmail, messageController.text);
-      messageController.clear();
-      scrollToBottom();
-    }
-  }
-
-  void scrollToBottom() {
-    if (scrollController.hasClients) {
-      scrollController.animateTo(
-        scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     var ownername = widget.ownerEmail.split('@')[0];
@@ -70,27 +52,30 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  // message list
-  Widget messagesList() {
-    return StreamBuilder(
-        stream: chatService.getMessages(widget.ownerEmail, currentUserEmail),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text('Error${snapshot.error}');
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text('Loading..');
-          }
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            scrollToBottom();
-          });
-          return ListView(
-            controller: scrollController,
-            children: snapshot.data!.docs
-                .map((document) => messageItem(document))
-                .toList(),
-          );
-        });
+  // message input
+  Widget messageInput() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: MyTextField(
+              controller: messageController,
+              hintText: 'Enter message',
+              obscureText: false,
+            ),
+          ),
+          IconButton(
+            onPressed: sendMessage,
+            icon: const Icon(
+              Icons.arrow_upward_rounded,
+              color: Colors.green,
+              size: 40,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   // message item
@@ -119,35 +104,54 @@ class _ChatPageState extends State<ChatPage> {
             const SizedBox(
               height: 5,
             ),
-            ChatBubble(message: data['message']),
+            ChatBubble(
+              message: data['message'],
+            ),
           ],
         ),
       ),
     );
   }
 
-  // message input
-  Widget messageInput() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: MyTextField(
-              controller: messageController,
-              hintText: 'Enter message',
-              obscureText: false,
-            ),
-          ),
-          IconButton(
-            onPressed: sendMessage,
-            icon: const Icon(
-              Icons.arrow_upward_rounded,
-              size: 30,
-            ),
-          ),
-        ],
-      ),
-    );
+  // message list
+  Widget messagesList() {
+    return StreamBuilder(
+        stream: chatService.getMessages(widget.ownerEmail, currentUserEmail),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Error${snapshot.error}');
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text('Loading..');
+          }
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            scrollToBottom();
+          });
+          return ListView(
+            controller: scrollController,
+            children: snapshot.data!.docs
+                .map((document) => messageItem(document))
+                .toList(),
+          );
+        });
+  }
+
+  void scrollToBottom() {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
+  void sendMessage() async {
+    if (messageController.text.isNotEmpty &&
+        messageController.text.trim().isNotEmpty) {
+      await chatService.sendMessage(widget.ownerEmail, messageController.text);
+      messageController.clear();
+      scrollToBottom();
+    }
   }
 }

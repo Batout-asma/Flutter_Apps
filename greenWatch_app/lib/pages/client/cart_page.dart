@@ -36,6 +36,7 @@ class _CartState extends State<Cart> {
             .toList());
       });
     } catch (error) {
+      // ignore: avoid_print
       print("Error fetching cart items: $error");
     }
   }
