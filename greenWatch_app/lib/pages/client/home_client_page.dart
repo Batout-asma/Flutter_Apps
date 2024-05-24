@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -20,11 +21,12 @@ class HomeClient extends StatefulWidget {
 }
 
 class _HomeClientState extends State<HomeClient> {
-  final user = FirebaseAuth.instance.currentUser!;
   final Future<FirebaseApp> _fApp = Firebase.initializeApp();
   String tempValue = '0';
   String humValue = '0';
   String lumValue = '0';
+  String soilValue = '50';
+
   DateTime? lastTempNotificationTime;
   DateTime? lastHumNotificationTime;
 
@@ -115,6 +117,48 @@ class _HomeClientState extends State<HomeClient> {
     );
   }
 
+  String getTemperatureImage(double temperature) {
+    if (temperature < 18) {
+      return 'assets/Ltemperature.png';
+    } else if (temperature > 24) {
+      return 'assets/Htemperature.png';
+    } else {
+      return 'assets/temperature.png';
+    }
+  }
+
+  String getHumidityImage(double humidity) {
+    if (humidity < 40) {
+      return 'assets/Lhumidity.png';
+    } else if (humidity > 80) {
+      return 'assets/Hhumidity.png';
+    } else {
+      return 'assets/humidity.png';
+    }
+  }
+
+  String getLuminosityImage(double luminosity) {
+    if (luminosity < 60) {
+      return 'assets/Llight.png';
+    } else if (luminosity > 120) {
+      return 'assets/Hlight.png';
+    } else {
+      return 'assets/light.png';
+    }
+  }
+
+  String getSoilHumImage(double soilHum) {
+    if (soilHum < 20) {
+      return 'assets/Lsoil.png';
+    } else if (soilHum > 60) {
+      return 'assets/Hsoil.png';
+    } else {
+      return 'assets/soil.png';
+    }
+  }
+
+  final user = FirebaseAuth.instance.currentUser!;
+
   Widget content() {
     DatabaseReference ref = FirebaseDatabase.instance.ref().child('UsersData');
     var userid = user.uid;
@@ -172,7 +216,7 @@ class _HomeClientState extends State<HomeClient> {
             if (lastHumNotificationTime == null ||
                 now.difference(lastHumNotificationTime!) >=
                     const Duration(seconds: 25)) {
-              showHumNotification(lumValue);
+              showLumNotification(lumValue);
               lastHumNotificationTime = now;
             }
           }
@@ -180,26 +224,29 @@ class _HomeClientState extends State<HomeClient> {
       },
     );
 
+    double temp = double.tryParse(tempValue) ?? 0;
+    double hum = double.tryParse(humValue) ?? 0;
+    double lum = double.tryParse(lumValue) ?? 0;
+    double soilHum = double.tryParse(soilValue) ?? 0;
+
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(25.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 50.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.green[300],
-                  ),
-                  padding: const EdgeInsets.all(20.0),
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 5),
-                      Text(
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.green[400],
+                ),
+                padding: const EdgeInsets.all(20.0),
+                child: const Column(
+                  children: [
+                    SizedBox(height: 5),
+                    Center(
+                      child: Text(
                         "GreenWatch Pro",
                         style: TextStyle(
                           fontSize: 30,
@@ -207,61 +254,51 @@ class _HomeClientState extends State<HomeClient> {
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 5),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 5),
+                  ],
                 ),
               ),
             ],
           ),
         ),
-        Text(
-          "Welcome, ${user.email?.split("@")[0]}!",
-          style: const TextStyle(
-            fontSize: 22,
-            color: Colors.black45,
-          ),
-        ),
         const SizedBox(height: 20),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Padding(padding: EdgeInsets.only(left: 30)),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Column(
+                  children: [
+                    Text(
+                      "Temperature",
+                      style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
                 Container(
-                  width: 150,
-                  height: 200,
+                  width: 120,
+                  height: 120,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.white24,
-                  ),
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white.withOpacity(0.75),
+                      image: DecorationImage(
+                          image: AssetImage(getTemperatureImage(temp)),
+                          fit: BoxFit.cover)),
                   padding: const EdgeInsets.all(15),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Temperature",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            tempValue,
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                          const SizedBox(width: 5),
-                          const Text(
-                            "°C",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '$tempValue °C',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.black),
                 ),
               ],
             ),
@@ -269,39 +306,36 @@ class _HomeClientState extends State<HomeClient> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Column(
+                  children: [
+                    Text(
+                      "Humidity",
+                      style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
                 Container(
-                  width: 150,
-                  height: 200,
+                  width: 120,
+                  height: 120,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.white24,
-                  ),
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white.withOpacity(0.75),
+                      image: DecorationImage(
+                          image: AssetImage(getHumidityImage(hum)),
+                          fit: BoxFit.cover)),
                   padding: const EdgeInsets.all(15),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Humidity",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            humValue,
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                          const SizedBox(width: 5),
-                          const Text(
-                            "%",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '$humValue %',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.black),
                 ),
               ],
             ),
@@ -311,44 +345,40 @@ class _HomeClientState extends State<HomeClient> {
           height: 50,
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Padding(padding: EdgeInsets.only(left: 30)),
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Column(
+                  children: [
+                    Text(
+                      "Luminosity",
+                      style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
                 Container(
-                  height: 200,
-                  width: 150,
+                  width: 120,
+                  height: 120,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.white24,
-                  ),
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white.withOpacity(0.75),
+                      image: DecorationImage(
+                          image: AssetImage(getLuminosityImage(lum)),
+                          fit: BoxFit.cover)),
                   padding: const EdgeInsets.all(15),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Luminosity",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            lumValue,
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                          const SizedBox(width: 5),
-                          const Text(
-                            "LUX",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '$lumValue LUX',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.black),
                 ),
               ],
             ),
@@ -356,39 +386,36 @@ class _HomeClientState extends State<HomeClient> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Column(
+                  children: [
+                    Text(
+                      "Soil Humidity",
+                      style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
                 Container(
-                  height: 200,
-                  width: 150,
+                  width: 120,
+                  height: 120,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.white24,
-                  ),
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white.withOpacity(0.75),
+                      image: DecorationImage(
+                          image: AssetImage(getSoilHumImage(soilHum)),
+                          fit: BoxFit.cover)),
                   padding: const EdgeInsets.all(15),
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Soil Humidity",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'N/A',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            "%",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  'N/A %',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.black),
                 ),
               ],
             ),
