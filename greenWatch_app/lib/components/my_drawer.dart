@@ -22,25 +22,16 @@ class MyDrawer extends StatelessWidget {
           Column(
             children: [
               // header
-              const DrawerHeader(
-                child: Icon(
-                  Icons.person,
-                  color: Color.fromARGB(255, 244, 244, 244),
-                  size: 100,
+              DrawerHeader(
+                child: Container(
+                  width: 150,
+                  height: 150,
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/logo_white.png'),
+                          fit: BoxFit.cover)),
                 ),
               ),
-
-              /*
-              // home navigator
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: MyListTile(
-                  icon: Icons.arrow_back_ios_rounded,
-                  text: text,
-                  onTap: () => Navigator.pop(context),
-                ),
-              ),
-             */
 
               // profile navigator
               Padding(

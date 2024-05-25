@@ -159,7 +159,7 @@ class _HomeClientState extends State<HomeClient> {
 
   final user = FirebaseAuth.instance.currentUser!;
 
-  Widget content() {
+  Widget consult() {
     DatabaseReference ref = FirebaseDatabase.instance.ref().child('UsersData');
     var userid = user.uid;
     final userUid = ref.child(userid.toString());
@@ -448,7 +448,7 @@ class _HomeClientState extends State<HomeClient> {
           if (snapshot.hasError) {
             return const Text("Something wrong with firebase");
           } else if (snapshot.hasData) {
-            return content();
+            return consult();
           } else {
             return const CircularProgressIndicator();
           }
