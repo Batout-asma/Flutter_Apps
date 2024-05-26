@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:green_watch_app/pages/client/home_client_page.dart';
+import 'package:green_watch_app/services/layout_page.dart';
 import 'package:green_watch_app/services/wrapper.dart';
 import 'package:green_watch_app/theme/light_theme.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -38,7 +39,7 @@ Future<void> main() async {
         debugPrint('notification payload: ${notificationResponse.payload}');
         if (notificationResponse.payload == 'HomePage') {
           navigatorKey.currentState?.pushReplacement(
-            MaterialPageRoute(builder: (context) => const HomeClient()),
+            MaterialPageRoute(builder: (context) => const Layout()),
           );
         }
       }

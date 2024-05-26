@@ -230,6 +230,8 @@ class _HomeClientState extends State<HomeClient> {
     double soilHum = double.tryParse(soilValue) ?? 0;
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
           padding: const EdgeInsets.all(25.0),
