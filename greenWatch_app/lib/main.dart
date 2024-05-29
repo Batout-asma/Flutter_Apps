@@ -23,6 +23,7 @@ Future<void> main() async {
       databaseURL: databaseURL,
       messagingSenderId: messagingSenderId,
       projectId: projectId,
+      storageBucket: "auth-app-9678a.appspot.com",
     ),
   );
   const AndroidInitializationSettings initializationSettingsAndroid =

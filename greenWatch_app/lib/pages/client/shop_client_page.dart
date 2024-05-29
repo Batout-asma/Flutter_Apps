@@ -44,7 +44,25 @@ class _ShopClientState extends State<ShopClient> {
 
   // Sign out user method
   void signUserOut() {
-    FirebaseAuth.instance.signOut();
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Log Out'),
+            content: const Text('Are you sure you want to sign out?'),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancel')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    FirebaseAuth.instance.signOut();
+                  },
+                  child: const Text('Log Out')),
+            ],
+          );
+        });
   }
 
   void goToSettingsPage() {
@@ -168,7 +186,7 @@ class _ShopClientState extends State<ShopClient> {
                       ),
                     )
                   : const SizedBox(
-                      height: 10,
+                      height: 100,
                       child: Center(
                         child: Text('No product Available'),
                       ),

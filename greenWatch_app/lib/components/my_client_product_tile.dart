@@ -30,16 +30,21 @@ class MyClientProductTile extends StatelessWidget {
               AspectRatio(
                 aspectRatio: 1,
                 child: Container(
+                  padding: const EdgeInsets.all(3),
                   decoration: BoxDecoration(
                     color: Colors.green[100],
                     borderRadius: BorderRadius.circular(15),
                   ),
                   width: double.infinity,
-                  padding: const EdgeInsets.all(25),
-                  child: const Icon(Icons.favorite_border_outlined),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: Image.network(
+                      product.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
-
               const SizedBox(height: 25),
 
               // Product name
@@ -56,9 +61,7 @@ class MyClientProductTile extends StatelessWidget {
               // Product description
               Text(
                 product.description,
-                style: TextStyle(
-                  color: Colors.green[900],
-                ),
+                style: TextStyle(color: Colors.green[900], fontSize: 10),
               ),
             ],
           ),

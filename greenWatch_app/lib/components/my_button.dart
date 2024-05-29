@@ -2,25 +2,26 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class MyButton extends StatelessWidget {
-  Function()? onTap;
+  final Function()? onTap;
   final String text;
-  MyButton({
+  final bool enabled;
+
+  const MyButton({
     super.key,
     required this.onTap,
     required this.text,
-    required bool enabled,
+    required this.enabled,
   });
 
   @override
   Widget build(BuildContext context) {
-    // return
     return GestureDetector(
-      onTap: onTap,
+      onTap: enabled ? onTap : null,
       child: Container(
         padding: const EdgeInsets.all(20),
         margin: const EdgeInsets.symmetric(horizontal: 50.0),
         decoration: BoxDecoration(
-          color: Colors.green[800],
+          color: enabled ? Colors.green[800] : Colors.grey[800],
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(

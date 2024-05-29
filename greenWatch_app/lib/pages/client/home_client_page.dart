@@ -322,15 +322,18 @@ class _HomeClientState extends State<HomeClient> {
         const Text(
           "Your Plants Our Priority",
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: FontWeight.normal,
             color: Colors.black,
           ),
         ),
         const SizedBox(height: 30),
+        // temperature and humidity
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            // temperature card
+
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -339,7 +342,7 @@ class _HomeClientState extends State<HomeClient> {
                     Text(
                       "Temperature",
                       style: TextStyle(
-                          fontSize: 22,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
@@ -362,56 +365,14 @@ class _HomeClientState extends State<HomeClient> {
                   '$tempValue °C',
                   style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 16,
                       color: Colors.black),
                 ),
               ],
             ),
-            const Padding(padding: EdgeInsets.only(left: 50)),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Column(
-                  children: [
-                    Text(
-                      "Humidity",
-                      style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.white.withOpacity(0.75),
-                      image: DecorationImage(
-                          image: AssetImage(getHumidityImage(hum)),
-                          fit: BoxFit.cover)),
-                  padding: const EdgeInsets.all(15),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  '$humValue %',
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.black),
-                ),
-              ],
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 50,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+
+            // luminosity card
+
             Column(
               children: [
                 const Column(
@@ -419,7 +380,7 @@ class _HomeClientState extends State<HomeClient> {
                     Text(
                       "Luminosity",
                       style: TextStyle(
-                          fontSize: 22,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
@@ -442,12 +403,61 @@ class _HomeClientState extends State<HomeClient> {
                   '$lumValue LUX',
                   style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 16,
                       color: Colors.black),
                 ),
               ],
             ),
-            const Padding(padding: EdgeInsets.only(left: 50)),
+          ],
+        ),
+        const SizedBox(
+          height: 50,
+        ),
+        // humidity and soil
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            // soil humidity card
+
+            // humidity card
+
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Column(
+                  children: [
+                    Text(
+                      "Humidity",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white.withOpacity(0.75),
+                      image: DecorationImage(
+                          image: AssetImage(getHumidityImage(hum)),
+                          fit: BoxFit.cover)),
+                  padding: const EdgeInsets.all(15),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '$humValue %',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.black),
+                ),
+              ],
+            ),
+
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -456,7 +466,7 @@ class _HomeClientState extends State<HomeClient> {
                     Text(
                       "Soil Humidity",
                       style: TextStyle(
-                          fontSize: 22,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
@@ -479,7 +489,7 @@ class _HomeClientState extends State<HomeClient> {
                   soilValue == '1' ? 'Wet' : 'Dry',
                   style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 16,
                       color: Colors.black),
                 ),
               ],

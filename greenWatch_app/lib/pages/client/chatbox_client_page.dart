@@ -17,7 +17,25 @@ class ChatBoxClient extends StatefulWidget {
 class _ChatBoxClientState extends State<ChatBoxClient> {
   // Sign user out method
   void signUserOut() {
-    FirebaseAuth.instance.signOut();
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Log Out'),
+            content: const Text('Are you sure you want to sign out?'),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancel')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    FirebaseAuth.instance.signOut();
+                  },
+                  child: const Text('Log Out')),
+            ],
+          );
+        });
   }
 
   void goToSettingsPage() {

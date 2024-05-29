@@ -6,6 +6,7 @@ class Product {
   final double price;
   final String description;
   final String owner;
+  final String imageUrl;
 
   Product({
     required this.id,
@@ -13,6 +14,7 @@ class Product {
     required this.price,
     required this.description,
     required this.owner,
+    required this.imageUrl,
   });
 
   Map<String, dynamic> toMap() {
@@ -22,6 +24,7 @@ class Product {
       'price': price,
       'description': description,
       'owner': owner,
+      'imageUrl': imageUrl
     };
   }
 
@@ -34,6 +37,7 @@ class Product {
           : data['price'] as double,
       description: data['description'] as String,
       owner: data['owner'] as String,
+      imageUrl: data['imageUrl'] as String,
     );
   }
 
@@ -46,6 +50,7 @@ class Product {
           : double.tryParse(data['price']?.toString() ?? '0.0') ?? 0.0,
       description: data['description']?.toString() ?? '',
       owner: data['owner']?.toString() ?? '',
+      imageUrl: data['imageUrl']?.toString() ?? '',
     );
   }
 
@@ -60,6 +65,7 @@ class Product {
           : double.tryParse(data['price']?.toString() ?? '0.0') ?? 0.0,
       description: data['description']?.toString() ?? '',
       owner: data['owner']?.toString() ?? '',
+      imageUrl: data['imageUrl']?.toString() ?? '',
     );
   }
 
