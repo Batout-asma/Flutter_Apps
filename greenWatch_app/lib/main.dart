@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:green_watch_app/pages/client/home_client_page.dart';
 import 'package:green_watch_app/services/layout_page.dart';
 import 'package:green_watch_app/services/wrapper.dart';
 import 'package:green_watch_app/theme/light_theme.dart';

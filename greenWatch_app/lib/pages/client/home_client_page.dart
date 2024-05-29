@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -25,13 +24,33 @@ class _HomeClientState extends State<HomeClient> {
   String tempValue = '0';
   String humValue = '0';
   String lumValue = '0';
-  String soilValue = '50';
+  String soilValue = '0';
 
   DateTime? lastTempNotificationTime;
   DateTime? lastHumNotificationTime;
+  DateTime? lastLumNotificationTime;
+  DateTime? lastSoilNotificationTime;
 
   void signUserOut() {
-    FirebaseAuth.instance.signOut();
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Log Out'),
+            content: const Text('Are you sure you want to sign out?'),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancel')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    FirebaseAuth.instance.signOut();
+                  },
+                  child: const Text('Log Out')),
+            ],
+          );
+        });
   }
 
   void goToSettingsPage() {
@@ -111,7 +130,28 @@ class _HomeClientState extends State<HomeClient> {
     await flutterLocalNotificationsPlugin.show(
       0,
       'Luminosity Alert',
-      'The humidity is $luminosity%',
+      'The Luminosity is $luminosity LUX',
+      platformChannelSpecifics,
+      payload: 'HomePage',
+    );
+  }
+
+  Future<void> showSoilNotification(String soilHumidity) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'your_channel_id',
+      'your_channel_name',
+      channelDescription: 'your_channel_description',
+      importance: Importance.max,
+      priority: Priority.high,
+      showWhen: false,
+    );
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'Soil Humidity Alert',
+      'The soil is dry',
       platformChannelSpecifics,
       payload: 'HomePage',
     );
@@ -148,12 +188,10 @@ class _HomeClientState extends State<HomeClient> {
   }
 
   String getSoilHumImage(double soilHum) {
-    if (soilHum < 20) {
-      return 'assets/Lsoil.png';
-    } else if (soilHum > 60) {
-      return 'assets/Hsoil.png';
-    } else {
+    if (soilHum == 1) {
       return 'assets/soil.png';
+    } else {
+      return 'assets/Lsoil.png';
     }
   }
 
@@ -167,6 +205,7 @@ class _HomeClientState extends State<HomeClient> {
     final temperature = readings.child('temperature');
     final humidity = readings.child('humidity');
     final luminosity = readings.child('luminosity');
+    final soilHumidity = readings.child('soil');
 
     temperature.onValue.listen(
       (event) {
@@ -213,28 +252,45 @@ class _HomeClientState extends State<HomeClient> {
                   double.parse(lumValue) < 60 ||
               double.parse(lumValue) > 120) {
             final now = DateTime.now();
-            if (lastHumNotificationTime == null ||
-                now.difference(lastHumNotificationTime!) >=
+            if (lastLumNotificationTime == null ||
+                now.difference(lastLumNotificationTime!) >=
                     const Duration(seconds: 25)) {
               showLumNotification(lumValue);
-              lastHumNotificationTime = now;
+              lastLumNotificationTime = now;
             }
           }
         });
       },
     );
 
+    soilHumidity.onValue.listen(
+      (event) {
+        setState(() {
+          soilValue = event.snapshot.value.toString();
+          if (double.tryParse(soilValue) != null &&
+              double.parse(soilValue) == 0) {
+            final now = DateTime.now();
+            if (lastSoilNotificationTime == null ||
+                now.difference(lastSoilNotificationTime!) >=
+                    const Duration(seconds: 20)) {
+              showSoilNotification(soilValue);
+              lastSoilNotificationTime = now;
+            }
+          }
+        });
+      },
+    );
     double temp = double.tryParse(tempValue) ?? 0;
     double hum = double.tryParse(humValue) ?? 0;
     double lum = double.tryParse(lumValue) ?? 0;
-    double soilHum = double.tryParse(soilValue) ?? 0;
+    double soiHum = double.tryParse(soilValue) ?? 0;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.all(25.0),
+          padding: const EdgeInsets.all(5.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -257,14 +313,21 @@ class _HomeClientState extends State<HomeClient> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 5),
                   ],
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 20),
+        const Text(
+          "Your Plants Our Priority",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.normal,
+            color: Colors.black,
+          ),
+        ),
+        const SizedBox(height: 30),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -407,14 +470,14 @@ class _HomeClientState extends State<HomeClient> {
                       borderRadius: BorderRadius.circular(15),
                       color: Colors.white.withOpacity(0.75),
                       image: DecorationImage(
-                          image: AssetImage(getSoilHumImage(soilHum)),
+                          image: AssetImage(getSoilHumImage(soiHum)),
                           fit: BoxFit.cover)),
                   padding: const EdgeInsets.all(15),
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  'N/A %',
-                  style: TextStyle(
+                Text(
+                  soilValue == '1' ? 'Wet' : 'Dry',
+                  style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                       color: Colors.black),

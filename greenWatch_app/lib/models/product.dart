@@ -29,9 +29,9 @@ class Product {
     return Product(
       id: data['id'] as String,
       name: data['name'] as String,
-      price: (data['price'] is int
+      price: (data['price'] is int)
           ? (data['price'] as int).toDouble()
-          : data['price']) as double,
+          : data['price'] as double,
       description: data['description'] as String,
       owner: data['owner'] as String,
     );
@@ -41,7 +41,9 @@ class Product {
     return Product(
       id: data['id']?.toString() ?? '',
       name: data['name']?.toString() ?? 'Unknown Product',
-      price: double.tryParse(data['price']) ?? 0.0,
+      price: (data['price'] is int)
+          ? (data['price'] as int).toDouble()
+          : double.tryParse(data['price']?.toString() ?? '0.0') ?? 0.0,
       description: data['description']?.toString() ?? '',
       owner: data['owner']?.toString() ?? '',
     );
@@ -53,7 +55,9 @@ class Product {
     return Product(
       id: snapshot.id,
       name: data['name']?.toString() ?? 'Unknown Product',
-      price: double.tryParse(data['price']) ?? 0.0,
+      price: (data['price'] is int)
+          ? (data['price'] as int).toDouble()
+          : double.tryParse(data['price']?.toString() ?? '0.0') ?? 0.0,
       description: data['description']?.toString() ?? '',
       owner: data['owner']?.toString() ?? '',
     );

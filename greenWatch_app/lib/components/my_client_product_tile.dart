@@ -1,37 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:green_watch_app/models/product.dart';
+import 'package:green_watch_app/services/add_product_to_cart.dart';
 
 class MyClientProductTile extends StatelessWidget {
   final Product product;
-  // ignore: prefer_typing_uninitialized_variables
 
   const MyClientProductTile({
     super.key,
     required this.product,
   });
-  void addToCart(BuildContext context) async {
-    final currentUser = FirebaseAuth.instance.currentUser!;
-    final userDocRef =
-        FirebaseFirestore.instance.collection('Users').doc(currentUser.email);
-    final cartRef = userDocRef.collection('Cart');
-
-    // Check for existing cart collection (optional)
-    final cartDocSnap = await userDocRef.get();
-    if (!cartDocSnap.exists) {
-      await userDocRef
-          .set({'cart': []}); // Create cart collection if it doesn't exist
-    }
-
-    await cartRef.add(product.toMap());
-    // ignore: use_build_context_synchronously
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('"${product.name}" added to cart!'),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +75,7 @@ class MyClientProductTile extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: IconButton(
-                  onPressed: () => addToCart(context),
+                  onPressed: () => addProductToCart(context, product),
                   icon: const Icon(Icons.add),
                 ),
               ),

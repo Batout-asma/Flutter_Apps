@@ -32,24 +32,6 @@ class _ShopClientState extends State<ShopClient> {
     return snapshot.docs.map((doc) => Product.fromFirestore(doc)).toList();
   }
 
-  void addToCart(Product product) async {
-    final userDocRef =
-        FirebaseFirestore.instance.collection('Users').doc(currentUser!.email);
-    final cartRef = userDocRef.collection('Cart');
-
-    final cartDocSnap = await userDocRef.get();
-    if (!cartDocSnap.exists) {
-      await userDocRef.set({'Cart': []});
-    }
-    await cartRef.add({'productId': product.id});
-    // ignore: use_build_context_synchronously
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('"${product.name}" added to cart!'),
-      ),
-    );
-  }
-
   void goToRequestPage() {
     // Go to request page
     Navigator.push(

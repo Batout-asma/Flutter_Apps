@@ -82,10 +82,10 @@ class _ChatPageState extends State<ChatPage> {
   Widget messageItem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-    // user messages to the right and other t the left
-    var alignment = (data['senderEmail'] == currentUserEmail)
-        ? Alignment.centerRight
-        : Alignment.centerLeft;
+    // user messages to the right and others to the left
+    bool isCurrentUser = data['senderEmail'] == currentUserEmail;
+    var alignment =
+        isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
     var name = data['senderEmail'].split('@')[0];
 
     return Container(
@@ -93,12 +93,10 @@ class _ChatPageState extends State<ChatPage> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
         child: Column(
-          crossAxisAlignment: (data['senderEmail'] == currentUserEmail)
-              ? CrossAxisAlignment.end
-              : CrossAxisAlignment.start,
-          mainAxisAlignment: (data['senderEmail'] == currentUserEmail)
-              ? MainAxisAlignment.end
-              : MainAxisAlignment.start,
+          crossAxisAlignment:
+              isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          mainAxisAlignment:
+              isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [
             Text(name),
             const SizedBox(
@@ -106,6 +104,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
             ChatBubble(
               message: data['message'],
+              isCurrentUser: isCurrentUser,
             ),
           ],
         ),
