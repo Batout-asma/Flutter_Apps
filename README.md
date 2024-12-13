@@ -1,84 +1,65 @@
-# GreenWatch App
+# Flutter_Apps
 
-**GreenWatch** is a Flutter application that allows users to monitor the conditions of their greenhouse remotely. With the help of the **ESP8266 module**, which is connected to Wi-Fi, the app displays real-time data about:
+This repository contains several Flutter applications developed to showcase various features and functionalities. The apps included are:
 
-- **Temperature**
-- **Humidity**
-- **Soil Humidity**
-- **Luminosity**
-
-Additionally, **GreenWatch** includes a **shop** feature where users can browse and purchase agricultural products needed for greenhouse management.
+- **GreenWatch**: An app for monitoring greenhouse conditions (temperature, humidity, soil humidity, luminosity) using the ESP8266 module.
+- **Add2Nbr**: A simple app designed to add two numbers and display the result, ideal for testing basic Flutter concepts and UI components.
+- **Hello**: A beginner-friendly app displaying a "Hello, World!" message, perfect for those just getting started with Flutter.
 
 ## Getting Started
 
-This project consists of two main components:
-1. **GreenWatch Flutter App** - The mobile app to monitor greenhouse conditions and shop for agricultural products.
-2. **ESP8266 Code** - Code for the ESP8266 module that connects to Wi-Fi and sends sensor data.
+To run the apps locally, follow the instructions below for setting up the required environment:
 
 ### Prerequisites
 
-To run this project, you will need:
+- **Flutter**: Install Flutter on your machine. Follow the installation guide [here](https://flutter.dev/docs/get-started/install).
+- **Dart**: Dart is automatically installed with Flutter. 
+- **VS Code**: You’ll need Visual Studio Code to develop and test the apps.
+- **Android Studio (optional)**: For emulation or running apps on Android devices.
 
-1. **ESP8266 Module** - This project relies on the ESP8266 for sending real-time sensor data to the app.  
-2. **Arduino IDE** - You will need the Arduino IDE to program the ESP8266 module and install necessary libraries.  
-3. **VS Code** - To develop and run the Flutter app.  
-4. **Android Studio (optional)** - For simulating the app on an Android device or for working with Android emulators.
+### Clone the Repository
 
-### Setting Up the ESP8266
+Clone this repository to your local machine using Git or by downloading the ZIP.
 
-1. **Install the Arduino IDE**  
-   If you don’t have the Arduino IDE, download and install it from [here](https://www.arduino.cc/en/software).
+```bash
+git clone https://github.com/Batout-asma/Flutter_Apps.git
+```
 
-2. **Install ESP8266 Board in Arduino IDE**  
-   Follow these steps to set up your ESP8266 module in the Arduino IDE:
-   - Go to **File** > **Preferences**, and under the **Additional Boards Manager URLs**, add the following URL:  
-     `http://arduino.esp8266.com/stable/package_esp8266com_index.json`
-   - Next, go to **Tools** > **Board** > **Boards Manager**, search for `esp8266` and install the latest version.
+### Install Dependencies
 
-3. **Install the Required Dependencies**  
-   In the Arduino IDE, you will need to install libraries to interface with the sensors and the Wi-Fi. These are included in the repo, but ensure you add them to the Arduino IDE using the **Library Manager**.
+After cloning the repository, navigate to the project directory of the app you want to run. In the terminal, run the following command to install the required Flutter dependencies:
 
-4. **Upload the Code to ESP8266**  
-   Upload the ESP8266 code from this repository to the module using the Arduino IDE.
+```bash
+flutter pub get
+```
 
-### Setting Up the Flutter App
+### Running the Apps
 
-1. **Install Flutter**  
-   If you haven’t already, download and install [Flutter](https://flutter.dev/docs/get-started/install) on your machine.
+You can either connect a physical Android device via USB or use an Android emulator. Then, run the app using:
 
-2. **Clone the Repository**  
-   Clone this repository to your local machine using Git or by downloading the ZIP.
+```bash
+flutter run
+```
 
-3. **Install Dependencies**  
-   In the project directory, run the following command to install the required Flutter dependencies:
-   ```bash
-   flutter pub get
-   ```
+### Apps in the Repository
 
-4. **Run the App**  
-   You can either connect your Android device via USB or use Android Studio for an emulator. Then, run the app with the following command:
-   ```bash
-   flutter run
-   ```
+#### 1. **GreenWatch App**
 
-5. **Connect the ESP8266**  
-   Ensure that the ESP8266 is connected to Wi-Fi network as well your android device. The app will start receiving real-time data from the ESP8266.
+GreenWatch allows users to monitor the conditions of their greenhouse, including temperature, humidity, soil humidity, and luminosity. It also features a shop for agricultural products.
 
-### Shop Feature
+#### 2. **Add2Nbr App**
 
-In addition to monitoring greenhouse conditions, **GreenWatch** includes a shop where users can purchase agricultural products like fertilizers, seeds, tools, and other greenhouse management essentials. Browse the available products, add them to your cart, and make purchases directly from the app.
+Add2Nbr is a simple app where users can input two numbers, and the app will display their sum. It’s a basic app to test the fundamentals of Flutter development.
 
-### Notes
+#### 3. **Hello App**
 
-- Make sure your ESP8266 is programmed and running properly before trying to connect it with the app.
-- You’ll need **VS Code** and **Android Studio** to develop and test the app. You can either use a physical Android device or an emulator to simulate the app.
+The Hello app is a basic "Hello, World!" Flutter app, perfect for beginners. It’s an introductory example of how to structure a simple Flutter application.
 
-## Dependencies
+## Notes
 
-- **Flutter**  
-- **Dart**  
-- **ESP8266 Libraries** for Arduino
+- Ensure you have the necessary Flutter environment set up (Flutter SDK, Android Studio/VS Code).
+- Make sure you have all required dependencies installed for the individual apps to work as expected.
 
 ## License
 
-This project is open-source and free to use. Contributions and improvements are welcome!
+This repository is open-source and free to use. Feel free to contribute, report issues, or fork the project.
